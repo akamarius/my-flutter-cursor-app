@@ -17,7 +17,9 @@ class DefaultFirebaseOptions {
       case TargetPlatform.windows:
         return windows;
       case TargetPlatform.linux:
-        return linux;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for linux - you can reconfigure this by running the FlutterFire CLI again.',
+        );
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
@@ -28,55 +30,45 @@ class DefaultFirebaseOptions {
   // Configuration par défaut pour le développement
   // En production, remplacez par vos vraies clés Firebase
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'demo-api-key',
-    appId: 'demo-app-id',
-    messagingSenderId: '123456789',
-    projectId: 'demo-project',
-    authDomain: 'demo-project.firebaseapp.com',
-    storageBucket: 'demo-project.appspot.com',
+    apiKey: 'AIzaSyBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    appId: '1:123456789012:web:abcdef1234567890',
+    messagingSenderId: '123456789012',
+    projectId: 'my-flutter-cursor-app',
+    authDomain: 'my-flutter-cursor-app.firebaseapp.com',
+    storageBucket: 'my-flutter-cursor-app.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'demo-api-key',
-    appId: 'demo-app-id',
-    messagingSenderId: '123456789',
-    projectId: 'demo-project',
-    storageBucket: 'demo-project.appspot.com',
+    apiKey: 'AIzaSyArK5uxxrfEnnEaYM1BMmpJpV-xSt2Ef4c',
+    appId: '1:755257917664:android:41cb29d3c46bb8a9b75085',
+    messagingSenderId: '755257917664',
+    projectId: 'my-flutter-cursor-app',
+    storageBucket: 'my-flutter-cursor-app.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'demo-api-key',
-    appId: 'demo-app-id',
-    messagingSenderId: '123456789',
-    projectId: 'demo-project',
-    storageBucket: 'demo-project.appspot.com',
-    iosClientId: 'demo-ios-client-id',
+    apiKey: 'AIzaSyBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    appId: '1:123456789012:ios:abcdef1234567890',
+    messagingSenderId: '123456789012',
+    projectId: 'my-flutter-cursor-app',
+    storageBucket: 'my-flutter-cursor-app.appspot.com',
     iosBundleId: 'com.example.myFlutterApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'demo-api-key',
-    appId: 'demo-app-id',
-    messagingSenderId: '123456789',
-    projectId: 'demo-project',
-    storageBucket: 'demo-project.appspot.com',
-    iosClientId: 'demo-ios-client-id',
+    apiKey: 'AIzaSyBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    appId: '1:123456789012:ios:abcdef1234567890',
+    messagingSenderId: '123456789012',
+    projectId: 'my-flutter-cursor-app',
+    storageBucket: 'my-flutter-cursor-app.appspot.com',
     iosBundleId: 'com.example.myFlutterApp',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'demo-api-key',
-    appId: 'demo-app-id',
-    messagingSenderId: '123456789',
-    projectId: 'demo-project',
-    storageBucket: 'demo-project.appspot.com',
+    apiKey: 'AIzaSyBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    appId: '1:123456789012:windows:abcdef1234567890',
+    messagingSenderId: '123456789012',
+    projectId: 'my-flutter-cursor-app',
+    storageBucket: 'my-flutter-cursor-app.appspot.com',
   );
-
-  static const FirebaseOptions linux = FirebaseOptions(
-    apiKey: 'demo-api-key',
-    appId: 'demo-app-id',
-    messagingSenderId: '123456789',
-    projectId: 'demo-project',
-    storageBucket: 'demo-project.appspot.com',
-  );
-} 
+}

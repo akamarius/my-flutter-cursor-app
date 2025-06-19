@@ -6,12 +6,14 @@ final claimRepositoryProvider = Provider<ClaimRepository>((ref) {
   throw UnimplementedError('ClaimRepository not initialized');
 });
 
-final claimStateProvider = StateNotifierProvider<ClaimNotifier, AsyncValue<List<Claim>>>((ref) {
+final claimStateProvider =
+    StateNotifierProvider<ClaimNotifier, AsyncValue<List<Claim>>>((ref) {
   final repository = ref.watch(claimRepositoryProvider);
   return ClaimNotifier(repository);
 });
 
-final claimRequestProvider = StateNotifierProvider<ClaimRequestNotifier, AsyncValue<Claim?>>((ref) {
+final claimRequestProvider =
+    StateNotifierProvider<ClaimRequestNotifier, AsyncValue<Claim?>>((ref) {
   final repository = ref.watch(claimRepositoryProvider);
   return ClaimRequestNotifier(repository);
 });
@@ -53,7 +55,8 @@ class ClaimRequestNotifier extends StateNotifier<AsyncValue<Claim?>> {
   Future<void> createClaim(ClaimRequest request) async {
     state = const AsyncValue.loading();
     try {
-      final claim = await _repository.createClaim(request);
+      final claim = await _repository.createClaim(
+          request, "current_user_id"); // TODO: get user id from auth provider
       state = AsyncValue.data(claim);
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);
@@ -67,4 +70,4 @@ class ClaimRequestNotifier extends StateNotifier<AsyncValue<Claim?>> {
       throw Exception('Failed to upload photo: $e');
     }
   }
-} 
+}

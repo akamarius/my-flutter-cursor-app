@@ -9,6 +9,12 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
+        leading: Navigator.of(context).canPop()
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            : null,
         title: const Text('Profil'),
         actions: [
           IconButton(
@@ -82,31 +88,31 @@ class ProfileScreen extends ConsumerWidget {
               ),
             ),
           ),
-          
+
           const SizedBox(height: 24),
-          
+
           // Informations personnelles
           Text(
             'Informations personnelles',
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
+
           _buildInfoCard(context, [
             _buildInfoRow('Email', 'demo@example.com', Icons.email),
             _buildInfoRow('Téléphone', '+33 1 23 45 67 89', Icons.phone),
             _buildInfoRow('Rôle', 'Assuré', Icons.badge),
           ]),
-          
+
           const SizedBox(height: 24),
-          
+
           // Actions rapides
           Text(
             'Actions rapides',
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
+
           _buildActionCard(context, [
             _buildActionRow(
               'Mes sinistres',
@@ -133,16 +139,16 @@ class ProfileScreen extends ConsumerWidget {
               () => context.go('/quote'),
             ),
           ]),
-          
+
           const SizedBox(height: 24),
-          
+
           // Paramètres
           Text(
             'Paramètres',
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
+
           _buildActionCard(context, [
             _buildActionRow(
               'Notifications',
@@ -192,7 +198,8 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildActionRow(String title, String subtitle, IconData icon, VoidCallback onTap) {
+  Widget _buildActionRow(
+      String title, String subtitle, IconData icon, VoidCallback onTap) {
     return ListTile(
       leading: Icon(icon, color: Colors.blue),
       title: Text(title),
@@ -270,4 +277,4 @@ class ProfileScreen extends ConsumerWidget {
       ],
     );
   }
-} 
+}

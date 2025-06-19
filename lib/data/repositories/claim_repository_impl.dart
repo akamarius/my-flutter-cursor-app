@@ -16,12 +16,12 @@ class ClaimRepositoryImpl implements ClaimRepository {
         _storage = storage ?? FirebaseStorage.instance;
 
   @override
-  Future<Claim> createClaim(ClaimRequest request) async {
+  Future<Claim> createClaim(ClaimRequest request, String userId) async {
     try {
       final docRef = _firestore.collection('claims').doc();
       final claim = Claim(
         id: docRef.id,
-        userId: 'current_user_id', // This will be replaced by the actual user ID
+        userId: userId,
         description: request.description,
         status: ClaimStatus.pending,
         createdAt: DateTime.now(),
@@ -47,9 +47,7 @@ class ClaimRepositoryImpl implements ClaimRepository {
           .orderBy('createdAt', descending: true)
           .get();
 
-      return snapshot.docs
-          .map((doc) => Claim.fromJson(doc.data()))
-          .toList();
+      return snapshot.docs.map((doc) => Claim.fromJson(doc.data())).toList();
     } catch (e) {
       throw Exception('Failed to get user claims: $e');
     }
@@ -84,11 +82,12 @@ class ClaimRepositoryImpl implements ClaimRepository {
   @override
   Future<String> uploadClaimPhoto(String claimId, List<int> photoBytes) async {
     try {
-      final ref = _storage.ref().child('claims/$claimId/${DateTime.now().millisecondsSinceEpoch}.jpg');
+      final ref = _storage.ref().child(
+          'claims/$claimId/${DateTime.now().millisecondsSinceEpoch}.jpg');
       await ref.putData(Uint8List.fromList(photoBytes));
       return await ref.getDownloadURL();
     } catch (e) {
       throw Exception('Failed to upload claim photo: $e');
     }
   }
-} 
+}

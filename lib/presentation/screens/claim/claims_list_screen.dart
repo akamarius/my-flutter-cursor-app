@@ -58,6 +58,12 @@ class _ClaimsListScreenState extends ConsumerState<ClaimsListScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: Navigator.of(context).canPop()
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            : null,
         title: const Text('Mes sinistres'),
         actions: [
           IconButton(
@@ -142,4 +148,4 @@ class _ClaimsListScreenState extends ConsumerState<ClaimsListScreen> {
       ),
     );
   }
-} 
+}

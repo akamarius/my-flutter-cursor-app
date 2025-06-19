@@ -65,7 +65,8 @@ class _ClaimScreenState extends ConsumerState<ClaimScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erreur lors de la sélection de l\'image: $e')),
+          SnackBar(
+              content: Text('Erreur lors de la sélection de l\'image: $e')),
         );
       }
     }
@@ -128,6 +129,12 @@ class _ClaimScreenState extends ConsumerState<ClaimScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Navigator.of(context).canPop()
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            : null,
         title: const Text('Déclaration de sinistre'),
       ),
       body: SingleChildScrollView(
@@ -251,4 +258,4 @@ class _ClaimScreenState extends ConsumerState<ClaimScreen> {
       ),
     );
   }
-} 
+}

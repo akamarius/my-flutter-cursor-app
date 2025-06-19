@@ -51,7 +51,7 @@ class _QuoteScreenState extends ConsumerState<QuoteScreen> {
     try {
       // Simulation d'une demande de cotation
       await Future.delayed(const Duration(seconds: 2));
-      
+
       if (mounted) {
         _showQuoteResult();
       }
@@ -91,6 +91,12 @@ class _QuoteScreenState extends ConsumerState<QuoteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Navigator.of(context).canPop()
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.black),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            : null,
         title: const Text('Demande de cotation'),
       ),
       body: SingleChildScrollView(
@@ -127,16 +133,16 @@ class _QuoteScreenState extends ConsumerState<QuoteScreen> {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               // Informations personnelles
               Text(
                 'Informations personnelles',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 16),
-              
+
               TextFormField(
                 controller: _nameController,
                 decoration: const InputDecoration(
@@ -151,9 +157,9 @@ class _QuoteScreenState extends ConsumerState<QuoteScreen> {
                   return null;
                 },
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(
@@ -172,9 +178,9 @@ class _QuoteScreenState extends ConsumerState<QuoteScreen> {
                   return null;
                 },
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               TextFormField(
                 controller: _phoneController,
                 decoration: const InputDecoration(
@@ -190,9 +196,9 @@ class _QuoteScreenState extends ConsumerState<QuoteScreen> {
                   return null;
                 },
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               TextFormField(
                 controller: _addressController,
                 decoration: const InputDecoration(
@@ -202,16 +208,16 @@ class _QuoteScreenState extends ConsumerState<QuoteScreen> {
                 ),
                 maxLines: 2,
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               // Type d'assurance
               Text(
                 'Type d\'assurance',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 16),
-              
+
               DropdownButtonFormField<String>(
                 value: _selectedInsuranceType,
                 decoration: const InputDecoration(
@@ -235,9 +241,9 @@ class _QuoteScreenState extends ConsumerState<QuoteScreen> {
                   return null;
                 },
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Niveau de couverture
               DropdownButtonFormField<String>(
                 value: _selectedCoverage,
@@ -262,9 +268,9 @@ class _QuoteScreenState extends ConsumerState<QuoteScreen> {
                   return null;
                 },
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               // Informations supplémentaires
               Card(
                 child: Padding(
@@ -293,9 +299,9 @@ class _QuoteScreenState extends ConsumerState<QuoteScreen> {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               // Bouton de soumission
               AnimatedButton(
                 text: 'Demander un devis',
@@ -311,4 +317,4 @@ class _QuoteScreenState extends ConsumerState<QuoteScreen> {
       ),
     );
   }
-} 
+}

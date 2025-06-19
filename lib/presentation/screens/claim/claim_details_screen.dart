@@ -43,6 +43,12 @@ class ClaimDetailsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: Navigator.of(context).canPop()
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            : null,
         title: const Text('Détails du sinistre'),
       ),
       body: claimsAsync.when(
@@ -169,4 +175,4 @@ class ClaimDetailsScreen extends ConsumerWidget {
       ),
     );
   }
-} 
+}

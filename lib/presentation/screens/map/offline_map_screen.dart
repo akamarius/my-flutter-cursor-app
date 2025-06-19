@@ -5,7 +5,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:my_flutter_app/domain/entities/office.dart';
 import 'package:my_flutter_app/services/map_service.dart';
 
-final officesProvider = StateNotifierProvider<OfficesNotifier, AsyncValue<List<Office>>>((ref) {
+final officesProvider =
+    StateNotifierProvider<OfficesNotifier, AsyncValue<List<Office>>>((ref) {
   return OfficesNotifier(ref.watch(mapServiceProvider));
 });
 
@@ -50,11 +51,18 @@ class _OfflineMapScreenState extends ConsumerState<OfflineMapScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: Navigator.of(context).canPop()
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            : null,
         title: const Text('Bureaux'),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: () => ref.read(officesProvider.notifier).refreshOffices(),
+            onPressed: () =>
+                ref.read(officesProvider.notifier).refreshOffices(),
           ),
         ],
       ),
@@ -75,12 +83,13 @@ class _OfflineMapScreenState extends ConsumerState<OfflineMapScreen> {
               tileProvider: NetworkTileProvider(),
               tileBuilder: (context, tileWidget, tile) {
                 // Check if tile is cached
-                final tileKey = '${tile.coordinates.z}/${tile.coordinates.x}/${tile.coordinates.y}';
-                
+                final tileKey =
+                    '${tile.coordinates.z}/${tile.coordinates.x}/${tile.coordinates.y}';
+
                 // Cache new tile asynchronously
-                ref.read(mapServiceProvider).cacheTile(tileKey, 
-                  'https://tile.openstreetmap.org/${tile.coordinates.z}/${tile.coordinates.x}/${tile.coordinates.y}.png');
-                
+                ref.read(mapServiceProvider).cacheTile(tileKey,
+                    'https://tile.openstreetmap.org/${tile.coordinates.z}/${tile.coordinates.x}/${tile.coordinates.y}.png');
+
                 return tileWidget;
               },
             ),
@@ -113,7 +122,8 @@ class _OfflineMapScreenState extends ConsumerState<OfflineMapScreen> {
               Text('Erreur: $error'),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () => ref.read(officesProvider.notifier).refreshOffices(),
+                onPressed: () =>
+                    ref.read(officesProvider.notifier).refreshOffices(),
                 child: const Text('Réessayer'),
               ),
             ],
@@ -176,4 +186,4 @@ class _OfflineMapScreenState extends ConsumerState<OfflineMapScreen> {
       ),
     );
   }
-} 
+}
