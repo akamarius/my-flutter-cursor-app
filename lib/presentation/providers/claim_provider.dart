@@ -1,9 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_flutter_app/domain/entities/claim.dart';
 import 'package:my_flutter_app/domain/repositories/claim_repository.dart';
+import 'package:my_flutter_app/data/repositories/claim_repository_impl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 final claimRepositoryProvider = Provider<ClaimRepository>((ref) {
-  throw UnimplementedError('ClaimRepository not initialized');
+  return ClaimRepositoryImpl(
+    firestore: FirebaseFirestore.instance,
+  ); // ClaimRepositoryImpl is a class that implements the ClaimRepository interface and is used to get the claims from the database
 });
 
 final claimStateProvider =
@@ -52,11 +56,10 @@ class ClaimRequestNotifier extends StateNotifier<AsyncValue<Claim?>> {
 
   ClaimRequestNotifier(this._repository) : super(const AsyncValue.data(null));
 
-  Future<void> createClaim(ClaimRequest request) async {
+  Future<void> createClaim(ClaimRequest request, String userId) async {
     state = const AsyncValue.loading();
     try {
-      final claim = await _repository.createClaim(
-          request, "current_user_id"); // TODO: get user id from auth provider
+      final claim = await _repository.createClaim(request, userId);
       state = AsyncValue.data(claim);
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);

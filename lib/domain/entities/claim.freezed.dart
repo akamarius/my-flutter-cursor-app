@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,132 +10,79 @@ part of 'claim.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-Claim _$ClaimFromJson(Map<String, dynamic> json) {
-  return _Claim.fromJson(json);
-}
 
 /// @nodoc
 mixin _$Claim {
-  String get id => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
-  ClaimStatus get status => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
-  double get latitude => throw _privateConstructorUsedError;
-  double get longitude => throw _privateConstructorUsedError;
-  List<String> get photoUrls => throw _privateConstructorUsedError;
-  String? get notes => throw _privateConstructorUsedError;
-  DateTime? get resolvedAt => throw _privateConstructorUsedError;
-
-  /// Serializes this Claim to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get id;
+  String get userId;
+  String get description;
+  ClaimStatus get status;
+  DateTime get createdAt;
+  double get latitude;
+  double get longitude;
+  List<String> get photoUrls;
+  String? get notes;
+  DateTime? get resolvedAt;
 
   /// Create a copy of Claim
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ClaimCopyWith<Claim> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ClaimCopyWith<$Res> {
-  factory $ClaimCopyWith(Claim value, $Res Function(Claim) then) =
-      _$ClaimCopyWithImpl<$Res, Claim>;
-  @useResult
-  $Res call(
-      {String id,
-      String userId,
-      String description,
-      ClaimStatus status,
-      DateTime createdAt,
-      double latitude,
-      double longitude,
-      List<String> photoUrls,
-      String? notes,
-      DateTime? resolvedAt});
-}
-
-/// @nodoc
-class _$ClaimCopyWithImpl<$Res, $Val extends Claim>
-    implements $ClaimCopyWith<$Res> {
-  _$ClaimCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of Claim
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $ClaimCopyWith<Claim> get copyWith =>
+      _$ClaimCopyWithImpl<Claim>(this as Claim, _$identity);
+
+  /// Serializes this Claim to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? id = null,
-    Object? userId = null,
-    Object? description = null,
-    Object? status = null,
-    Object? createdAt = null,
-    Object? latitude = null,
-    Object? longitude = null,
-    Object? photoUrls = null,
-    Object? notes = freezed,
-    Object? resolvedAt = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as ClaimStatus,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      latitude: null == latitude
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
-              as double,
-      longitude: null == longitude
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
-              as double,
-      photoUrls: null == photoUrls
-          ? _value.photoUrls
-          : photoUrls // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      notes: freezed == notes
-          ? _value.notes
-          : notes // ignore: cast_nullable_to_non_nullable
-              as String?,
-      resolvedAt: freezed == resolvedAt
-          ? _value.resolvedAt
-          : resolvedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Claim &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude) &&
+            const DeepCollectionEquality().equals(other.photoUrls, photoUrls) &&
+            (identical(other.notes, notes) || other.notes == notes) &&
+            (identical(other.resolvedAt, resolvedAt) ||
+                other.resolvedAt == resolvedAt));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      userId,
+      description,
+      status,
+      createdAt,
+      latitude,
+      longitude,
+      const DeepCollectionEquality().hash(photoUrls),
+      notes,
+      resolvedAt);
+
+  @override
+  String toString() {
+    return 'Claim(id: $id, userId: $userId, description: $description, status: $status, createdAt: $createdAt, latitude: $latitude, longitude: $longitude, photoUrls: $photoUrls, notes: $notes, resolvedAt: $resolvedAt)';
   }
 }
 
 /// @nodoc
-abstract class _$$ClaimImplCopyWith<$Res> implements $ClaimCopyWith<$Res> {
-  factory _$$ClaimImplCopyWith(
-          _$ClaimImpl value, $Res Function(_$ClaimImpl) then) =
-      __$$ClaimImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $ClaimCopyWith<$Res> {
+  factory $ClaimCopyWith(Claim value, $Res Function(Claim) _then) =
+      _$ClaimCopyWithImpl;
   @useResult
   $Res call(
       {String id,
@@ -150,12 +98,11 @@ abstract class _$$ClaimImplCopyWith<$Res> implements $ClaimCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$ClaimImplCopyWithImpl<$Res>
-    extends _$ClaimCopyWithImpl<$Res, _$ClaimImpl>
-    implements _$$ClaimImplCopyWith<$Res> {
-  __$$ClaimImplCopyWithImpl(
-      _$ClaimImpl _value, $Res Function(_$ClaimImpl) _then)
-      : super(_value, _then);
+class _$ClaimCopyWithImpl<$Res> implements $ClaimCopyWith<$Res> {
+  _$ClaimCopyWithImpl(this._self, this._then);
+
+  final Claim _self;
+  final $Res Function(Claim) _then;
 
   /// Create a copy of Claim
   /// with the given fields replaced by the non-null parameter values.
@@ -173,45 +120,45 @@ class __$$ClaimImplCopyWithImpl<$Res>
     Object? notes = freezed,
     Object? resolvedAt = freezed,
   }) {
-    return _then(_$ClaimImpl(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
       userId: null == userId
-          ? _value.userId
+          ? _self.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
       description: null == description
-          ? _value.description
+          ? _self.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
       status: null == status
-          ? _value.status
+          ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
               as ClaimStatus,
       createdAt: null == createdAt
-          ? _value.createdAt
+          ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
       latitude: null == latitude
-          ? _value.latitude
+          ? _self.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
               as double,
       longitude: null == longitude
-          ? _value.longitude
+          ? _self.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
       photoUrls: null == photoUrls
-          ? _value._photoUrls
+          ? _self.photoUrls
           : photoUrls // ignore: cast_nullable_to_non_nullable
               as List<String>,
       notes: freezed == notes
-          ? _value.notes
+          ? _self.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String?,
       resolvedAt: freezed == resolvedAt
-          ? _value.resolvedAt
+          ? _self.resolvedAt
           : resolvedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
     ));
@@ -220,8 +167,8 @@ class __$$ClaimImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ClaimImpl implements _Claim {
-  const _$ClaimImpl(
+class _Claim implements Claim {
+  const _Claim(
       {required this.id,
       required this.userId,
       required this.description,
@@ -233,9 +180,7 @@ class _$ClaimImpl implements _Claim {
       this.notes,
       this.resolvedAt})
       : _photoUrls = photoUrls;
-
-  factory _$ClaimImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ClaimImplFromJson(json);
+  factory _Claim.fromJson(Map<String, dynamic> json) => _$ClaimFromJson(json);
 
   @override
   final String id;
@@ -264,16 +209,26 @@ class _$ClaimImpl implements _Claim {
   @override
   final DateTime? resolvedAt;
 
+  /// Create a copy of Claim
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'Claim(id: $id, userId: $userId, description: $description, status: $status, createdAt: $createdAt, latitude: $latitude, longitude: $longitude, photoUrls: $photoUrls, notes: $notes, resolvedAt: $resolvedAt)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ClaimCopyWith<_Claim> get copyWith =>
+      __$ClaimCopyWithImpl<_Claim>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$ClaimToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ClaimImpl &&
+            other is _Claim &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.description, description) ||
@@ -307,155 +262,149 @@ class _$ClaimImpl implements _Claim {
       notes,
       resolvedAt);
 
-  /// Create a copy of Claim
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$ClaimImplCopyWith<_$ClaimImpl> get copyWith =>
-      __$$ClaimImplCopyWithImpl<_$ClaimImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ClaimImplToJson(
-      this,
-    );
+  String toString() {
+    return 'Claim(id: $id, userId: $userId, description: $description, status: $status, createdAt: $createdAt, latitude: $latitude, longitude: $longitude, photoUrls: $photoUrls, notes: $notes, resolvedAt: $resolvedAt)';
   }
 }
 
-abstract class _Claim implements Claim {
-  const factory _Claim(
-      {required final String id,
-      required final String userId,
-      required final String description,
-      required final ClaimStatus status,
-      required final DateTime createdAt,
-      required final double latitude,
-      required final double longitude,
-      required final List<String> photoUrls,
-      final String? notes,
-      final DateTime? resolvedAt}) = _$ClaimImpl;
+/// @nodoc
+abstract mixin class _$ClaimCopyWith<$Res> implements $ClaimCopyWith<$Res> {
+  factory _$ClaimCopyWith(_Claim value, $Res Function(_Claim) _then) =
+      __$ClaimCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      String userId,
+      String description,
+      ClaimStatus status,
+      DateTime createdAt,
+      double latitude,
+      double longitude,
+      List<String> photoUrls,
+      String? notes,
+      DateTime? resolvedAt});
+}
 
-  factory _Claim.fromJson(Map<String, dynamic> json) = _$ClaimImpl.fromJson;
+/// @nodoc
+class __$ClaimCopyWithImpl<$Res> implements _$ClaimCopyWith<$Res> {
+  __$ClaimCopyWithImpl(this._self, this._then);
 
-  @override
-  String get id;
-  @override
-  String get userId;
-  @override
-  String get description;
-  @override
-  ClaimStatus get status;
-  @override
-  DateTime get createdAt;
-  @override
-  double get latitude;
-  @override
-  double get longitude;
-  @override
-  List<String> get photoUrls;
-  @override
-  String? get notes;
-  @override
-  DateTime? get resolvedAt;
+  final _Claim _self;
+  final $Res Function(_Claim) _then;
 
   /// Create a copy of Claim
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ClaimImplCopyWith<_$ClaimImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-ClaimRequest _$ClaimRequestFromJson(Map<String, dynamic> json) {
-  return _ClaimRequest.fromJson(json);
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? userId = null,
+    Object? description = null,
+    Object? status = null,
+    Object? createdAt = null,
+    Object? latitude = null,
+    Object? longitude = null,
+    Object? photoUrls = null,
+    Object? notes = freezed,
+    Object? resolvedAt = freezed,
+  }) {
+    return _then(_Claim(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _self.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _self.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _self.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as ClaimStatus,
+      createdAt: null == createdAt
+          ? _self.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      latitude: null == latitude
+          ? _self.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      longitude: null == longitude
+          ? _self.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      photoUrls: null == photoUrls
+          ? _self._photoUrls
+          : photoUrls // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      notes: freezed == notes
+          ? _self.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String?,
+      resolvedAt: freezed == resolvedAt
+          ? _self.resolvedAt
+          : resolvedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
+  }
 }
 
 /// @nodoc
 mixin _$ClaimRequest {
-  String get description => throw _privateConstructorUsedError;
-  double get latitude => throw _privateConstructorUsedError;
-  double get longitude => throw _privateConstructorUsedError;
-  List<String> get photoUrls => throw _privateConstructorUsedError;
-  String? get notes => throw _privateConstructorUsedError;
-
-  /// Serializes this ClaimRequest to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get description;
+  double get latitude;
+  double get longitude;
+  List<String> get photoUrls;
+  String? get notes;
 
   /// Create a copy of ClaimRequest
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ClaimRequestCopyWith<ClaimRequest> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ClaimRequestCopyWith<$Res> {
-  factory $ClaimRequestCopyWith(
-          ClaimRequest value, $Res Function(ClaimRequest) then) =
-      _$ClaimRequestCopyWithImpl<$Res, ClaimRequest>;
-  @useResult
-  $Res call(
-      {String description,
-      double latitude,
-      double longitude,
-      List<String> photoUrls,
-      String? notes});
-}
-
-/// @nodoc
-class _$ClaimRequestCopyWithImpl<$Res, $Val extends ClaimRequest>
-    implements $ClaimRequestCopyWith<$Res> {
-  _$ClaimRequestCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of ClaimRequest
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $ClaimRequestCopyWith<ClaimRequest> get copyWith =>
+      _$ClaimRequestCopyWithImpl<ClaimRequest>(
+          this as ClaimRequest, _$identity);
+
+  /// Serializes this ClaimRequest to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? description = null,
-    Object? latitude = null,
-    Object? longitude = null,
-    Object? photoUrls = null,
-    Object? notes = freezed,
-  }) {
-    return _then(_value.copyWith(
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      latitude: null == latitude
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
-              as double,
-      longitude: null == longitude
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
-              as double,
-      photoUrls: null == photoUrls
-          ? _value.photoUrls
-          : photoUrls // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      notes: freezed == notes
-          ? _value.notes
-          : notes // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is ClaimRequest &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude) &&
+            const DeepCollectionEquality().equals(other.photoUrls, photoUrls) &&
+            (identical(other.notes, notes) || other.notes == notes));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, description, latitude, longitude,
+      const DeepCollectionEquality().hash(photoUrls), notes);
+
+  @override
+  String toString() {
+    return 'ClaimRequest(description: $description, latitude: $latitude, longitude: $longitude, photoUrls: $photoUrls, notes: $notes)';
   }
 }
 
 /// @nodoc
-abstract class _$$ClaimRequestImplCopyWith<$Res>
-    implements $ClaimRequestCopyWith<$Res> {
-  factory _$$ClaimRequestImplCopyWith(
-          _$ClaimRequestImpl value, $Res Function(_$ClaimRequestImpl) then) =
-      __$$ClaimRequestImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $ClaimRequestCopyWith<$Res> {
+  factory $ClaimRequestCopyWith(
+          ClaimRequest value, $Res Function(ClaimRequest) _then) =
+      _$ClaimRequestCopyWithImpl;
   @useResult
   $Res call(
       {String description,
@@ -466,12 +415,11 @@ abstract class _$$ClaimRequestImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$ClaimRequestImplCopyWithImpl<$Res>
-    extends _$ClaimRequestCopyWithImpl<$Res, _$ClaimRequestImpl>
-    implements _$$ClaimRequestImplCopyWith<$Res> {
-  __$$ClaimRequestImplCopyWithImpl(
-      _$ClaimRequestImpl _value, $Res Function(_$ClaimRequestImpl) _then)
-      : super(_value, _then);
+class _$ClaimRequestCopyWithImpl<$Res> implements $ClaimRequestCopyWith<$Res> {
+  _$ClaimRequestCopyWithImpl(this._self, this._then);
+
+  final ClaimRequest _self;
+  final $Res Function(ClaimRequest) _then;
 
   /// Create a copy of ClaimRequest
   /// with the given fields replaced by the non-null parameter values.
@@ -484,25 +432,25 @@ class __$$ClaimRequestImplCopyWithImpl<$Res>
     Object? photoUrls = null,
     Object? notes = freezed,
   }) {
-    return _then(_$ClaimRequestImpl(
+    return _then(_self.copyWith(
       description: null == description
-          ? _value.description
+          ? _self.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
       latitude: null == latitude
-          ? _value.latitude
+          ? _self.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
               as double,
       longitude: null == longitude
-          ? _value.longitude
+          ? _self.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
       photoUrls: null == photoUrls
-          ? _value._photoUrls
+          ? _self.photoUrls
           : photoUrls // ignore: cast_nullable_to_non_nullable
               as List<String>,
       notes: freezed == notes
-          ? _value.notes
+          ? _self.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
@@ -511,17 +459,16 @@ class __$$ClaimRequestImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ClaimRequestImpl implements _ClaimRequest {
-  const _$ClaimRequestImpl(
+class _ClaimRequest implements ClaimRequest {
+  const _ClaimRequest(
       {required this.description,
       required this.latitude,
       required this.longitude,
       required final List<String> photoUrls,
       this.notes})
       : _photoUrls = photoUrls;
-
-  factory _$ClaimRequestImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ClaimRequestImplFromJson(json);
+  factory _ClaimRequest.fromJson(Map<String, dynamic> json) =>
+      _$ClaimRequestFromJson(json);
 
   @override
   final String description;
@@ -540,16 +487,26 @@ class _$ClaimRequestImpl implements _ClaimRequest {
   @override
   final String? notes;
 
+  /// Create a copy of ClaimRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'ClaimRequest(description: $description, latitude: $latitude, longitude: $longitude, photoUrls: $photoUrls, notes: $notes)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ClaimRequestCopyWith<_ClaimRequest> get copyWith =>
+      __$ClaimRequestCopyWithImpl<_ClaimRequest>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$ClaimRequestToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ClaimRequestImpl &&
+            other is _ClaimRequest &&
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.latitude, latitude) ||
@@ -566,48 +523,70 @@ class _$ClaimRequestImpl implements _ClaimRequest {
   int get hashCode => Object.hash(runtimeType, description, latitude, longitude,
       const DeepCollectionEquality().hash(_photoUrls), notes);
 
-  /// Create a copy of ClaimRequest
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$ClaimRequestImplCopyWith<_$ClaimRequestImpl> get copyWith =>
-      __$$ClaimRequestImplCopyWithImpl<_$ClaimRequestImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ClaimRequestImplToJson(
-      this,
-    );
+  String toString() {
+    return 'ClaimRequest(description: $description, latitude: $latitude, longitude: $longitude, photoUrls: $photoUrls, notes: $notes)';
   }
 }
 
-abstract class _ClaimRequest implements ClaimRequest {
-  const factory _ClaimRequest(
-      {required final String description,
-      required final double latitude,
-      required final double longitude,
-      required final List<String> photoUrls,
-      final String? notes}) = _$ClaimRequestImpl;
+/// @nodoc
+abstract mixin class _$ClaimRequestCopyWith<$Res>
+    implements $ClaimRequestCopyWith<$Res> {
+  factory _$ClaimRequestCopyWith(
+          _ClaimRequest value, $Res Function(_ClaimRequest) _then) =
+      __$ClaimRequestCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {String description,
+      double latitude,
+      double longitude,
+      List<String> photoUrls,
+      String? notes});
+}
 
-  factory _ClaimRequest.fromJson(Map<String, dynamic> json) =
-      _$ClaimRequestImpl.fromJson;
+/// @nodoc
+class __$ClaimRequestCopyWithImpl<$Res>
+    implements _$ClaimRequestCopyWith<$Res> {
+  __$ClaimRequestCopyWithImpl(this._self, this._then);
 
-  @override
-  String get description;
-  @override
-  double get latitude;
-  @override
-  double get longitude;
-  @override
-  List<String> get photoUrls;
-  @override
-  String? get notes;
+  final _ClaimRequest _self;
+  final $Res Function(_ClaimRequest) _then;
 
   /// Create a copy of ClaimRequest
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ClaimRequestImplCopyWith<_$ClaimRequestImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? description = null,
+    Object? latitude = null,
+    Object? longitude = null,
+    Object? photoUrls = null,
+    Object? notes = freezed,
+  }) {
+    return _then(_ClaimRequest(
+      description: null == description
+          ? _self.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      latitude: null == latitude
+          ? _self.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      longitude: null == longitude
+          ? _self.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      photoUrls: null == photoUrls
+          ? _self._photoUrls
+          : photoUrls // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      notes: freezed == notes
+          ? _self.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
 }
+
+// dart format on

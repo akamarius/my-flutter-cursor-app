@@ -80,16 +80,17 @@ void main() {
 
   testWidgets('Shows error message when submitting without location',
       (WidgetTester tester) async {
-    when(mockRepository.createClaim(any)).thenAnswer((_) async => Claim(
-          id: 'test_id',
-          userId: 'test_user',
-          description: 'Test claim',
-          status: ClaimStatus.pending,
-          createdAt: DateTime.now(),
-          latitude: 0.0,
-          longitude: 0.0,
-          photoUrls: [],
-        ));
+    when(mockRepository.createClaim(any, 'test_user'))
+        .thenAnswer((_) async => Claim(
+              id: 'test_id',
+              userId: 'test_user',
+              description: 'Test claim',
+              status: ClaimStatus.pending,
+              createdAt: DateTime.now(),
+              latitude: 0.0,
+              longitude: 0.0,
+              photoUrls: [],
+            ));
 
     await tester.pumpWidget(
       UncontrolledProviderScope(
@@ -114,16 +115,17 @@ void main() {
 
   testWidgets('Shows loading indicator when submitting',
       (WidgetTester tester) async {
-    when(mockRepository.createClaim(any)).thenAnswer((_) async => Claim(
-          id: 'test_id',
-          userId: 'test_user',
-          description: 'Test claim',
-          status: ClaimStatus.pending,
-          createdAt: DateTime.now(),
-          latitude: 0.0,
-          longitude: 0.0,
-          photoUrls: [],
-        ));
+    when(mockRepository.createClaim(any, 'test_user'))
+        .thenAnswer((_) async => Claim(
+              id: 'test_id',
+              userId: 'test_user',
+              description: 'Test claim',
+              status: ClaimStatus.pending,
+              createdAt: DateTime.now(),
+              latitude: 0.0,
+              longitude: 0.0,
+              photoUrls: [],
+            ));
 
     await tester.pumpWidget(
       UncontrolledProviderScope(
@@ -148,4 +150,4 @@ void main() {
     // Verify loading indicator
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
   });
-} 
+}

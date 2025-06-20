@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_flutter_app/presentation/providers/auth_provider.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -19,7 +20,7 @@ class ProfileScreen extends ConsumerWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () => _showLogoutDialog(context),
+            onPressed: () => _showLogoutDialog(context, ref),
           ),
         ],
       ),
@@ -209,7 +210,7 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  void _showLogoutDialog(BuildContext context) {
+  void _showLogoutDialog(BuildContext context, WidgetRef ref) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -221,9 +222,31 @@ class ProfileScreen extends ConsumerWidget {
             child: const Text('Annuler'),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.of(context).pop();
-              context.go('/');
+
+              try {
+                await ref.read(authStateProvider.notifier).signOut();
+                context.go('/login');
+
+                Navigator.of(context).pop();
+                context.go('/login');
+              } catch (e) {
+                if (!context.mounted) return;
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text('Échec de la déconnexion'),
+                    duration: const Duration(seconds: 2),
+                    action: SnackBarAction(
+                      label: 'OK',
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      },
+                    ),
+                  ),
+                );
+              }
             },
             child: const Text('Déconnexion'),
           ),

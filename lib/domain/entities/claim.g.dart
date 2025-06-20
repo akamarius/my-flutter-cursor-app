@@ -6,7 +6,7 @@ part of 'claim.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ClaimImpl _$$ClaimImplFromJson(Map<String, dynamic> json) => _$ClaimImpl(
+_Claim _$ClaimFromJson(Map<String, dynamic> json) => _Claim(
       id: json['id'] as String,
       userId: json['userId'] as String,
       description: json['description'] as String,
@@ -22,8 +22,7 @@ _$ClaimImpl _$$ClaimImplFromJson(Map<String, dynamic> json) => _$ClaimImpl(
           : DateTime.parse(json['resolvedAt'] as String),
     );
 
-Map<String, dynamic> _$$ClaimImplToJson(_$ClaimImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ClaimToJson(_Claim instance) => <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,
       'description': instance.description,
@@ -43,8 +42,8 @@ const _$ClaimStatusEnumMap = {
   ClaimStatus.rejected: 'rejected',
 };
 
-_$ClaimRequestImpl _$$ClaimRequestImplFromJson(Map<String, dynamic> json) =>
-    _$ClaimRequestImpl(
+_ClaimRequest _$ClaimRequestFromJson(Map<String, dynamic> json) =>
+    _ClaimRequest(
       description: json['description'] as String,
       latitude: (json['latitude'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
@@ -53,7 +52,7 @@ _$ClaimRequestImpl _$$ClaimRequestImplFromJson(Map<String, dynamic> json) =>
       notes: json['notes'] as String?,
     );
 
-Map<String, dynamic> _$$ClaimRequestImplToJson(_$ClaimRequestImpl instance) =>
+Map<String, dynamic> _$ClaimRequestToJson(_ClaimRequest instance) =>
     <String, dynamic>{
       'description': instance.description,
       'latitude': instance.latitude,

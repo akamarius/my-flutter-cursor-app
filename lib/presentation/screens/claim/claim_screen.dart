@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_flutter_app/domain/entities/claim.dart';
+import 'package:my_flutter_app/presentation/providers/auth_provider.dart';
 import 'package:my_flutter_app/presentation/providers/claim_provider.dart';
 
 class ClaimScreen extends ConsumerStatefulWidget {
@@ -104,7 +105,9 @@ class _ClaimScreenState extends ConsumerState<ClaimScreen> {
         notes: _notesController.text.trim(),
       );
 
-      await ref.read(claimRequestProvider.notifier).createClaim(request);
+      await ref
+          .read(claimRequestProvider.notifier)
+          .createClaim(request, ref.read(authStateProvider).value?.id ?? '');
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

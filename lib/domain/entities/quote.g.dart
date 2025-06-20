@@ -6,7 +6,7 @@ part of 'quote.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$QuoteImpl _$$QuoteImplFromJson(Map<String, dynamic> json) => _$QuoteImpl(
+_Quote _$QuoteFromJson(Map<String, dynamic> json) => _Quote(
       id: json['id'] as String,
       userId: json['userId'] as String,
       brand: json['brand'] as String,
@@ -18,8 +18,7 @@ _$QuoteImpl _$$QuoteImplFromJson(Map<String, dynamic> json) => _$QuoteImpl(
       notes: json['notes'] as String?,
     );
 
-Map<String, dynamic> _$$QuoteImplToJson(_$QuoteImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$QuoteToJson(_Quote instance) => <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,
       'brand': instance.brand,
@@ -31,8 +30,8 @@ Map<String, dynamic> _$$QuoteImplToJson(_$QuoteImpl instance) =>
       'notes': instance.notes,
     };
 
-_$QuoteRequestImpl _$$QuoteRequestImplFromJson(Map<String, dynamic> json) =>
-    _$QuoteRequestImpl(
+_QuoteRequest _$QuoteRequestFromJson(Map<String, dynamic> json) =>
+    _QuoteRequest(
       brand: json['brand'] as String,
       model: json['model'] as String,
       year: (json['year'] as num).toInt(),
@@ -40,7 +39,7 @@ _$QuoteRequestImpl _$$QuoteRequestImplFromJson(Map<String, dynamic> json) =>
       notes: json['notes'] as String?,
     );
 
-Map<String, dynamic> _$$QuoteRequestImplToJson(_$QuoteRequestImpl instance) =>
+Map<String, dynamic> _$QuoteRequestToJson(_QuoteRequest instance) =>
     <String, dynamic>{
       'brand': instance.brand,
       'model': instance.model,

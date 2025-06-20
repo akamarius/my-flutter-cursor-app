@@ -9,20 +9,34 @@ import 'package:my_flutter_app/presentation/screens/claim/claim_details_screen.d
 import 'package:my_flutter_app/presentation/screens/map/offline_map_screen.dart';
 import 'package:my_flutter_app/presentation/screens/profile/profile_screen.dart';
 import 'package:my_flutter_app/presentation/screens/quote/quote_screen.dart';
+import 'package:my_flutter_app/presentation/providers/auth_provider.dart';
 
 part 'router.g.dart';
 
 @riverpod
 GoRouter router(RouterRef ref) {
+  final authState = ref.watch(authStateProvider);
+
   return GoRouter(
     initialLocation: '/',
-    routes: [
-      // Route d'accueil
-      GoRoute(
-        path: '/',
-        builder: (context, state) => const HomeScreen(),
-      ),
+    redirect: (context, state) {
+      final isAuthenticated = authState.value != null;
+      final isOnAuthPage = state.matchedLocation == '/login' ||
+          state.matchedLocation == '/register';
 
+      // Si l'utilisateur n'est pas connecté et n'est pas sur une page d'auth
+      if (!isAuthenticated && !isOnAuthPage) {
+        return '/login';
+      }
+
+      // Si l'utilisateur est connecté et est sur une page d'auth
+      if (isAuthenticated && isOnAuthPage) {
+        return '/dashboard';
+      }
+
+      return null;
+    },
+    routes: [
       // Routes d'authentification
       GoRoute(
         path: '/login',
@@ -31,6 +45,12 @@ GoRouter router(RouterRef ref) {
       GoRoute(
         path: '/register',
         builder: (context, state) => const RegisterScreen(),
+      ),
+
+      // Route d'accueil (redirige vers dashboard si connecté)
+      GoRoute(
+        path: '/',
+        builder: (context, state) => const HomeScreen(),
       ),
 
       // Route dashboard
@@ -89,7 +109,7 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.person),
-            onPressed: () => context.go('/profile'),
+            onPressed: () => context.push('/profile'),
           ),
         ],
       ),
@@ -119,12 +139,12 @@ class HomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton.icon(
-                  onPressed: () => context.go('/claims'),
+                  onPressed: () => context.push('/claims'),
                   icon: const Icon(Icons.list),
                   label: const Text('Mes Sinistres'),
                 ),
                 ElevatedButton.icon(
-                  onPressed: () => context.go('/claims/new'),
+                  onPressed: () => context.push('/claims/new'),
                   icon: const Icon(Icons.add),
                   label: const Text('Nouveau Sinistre'),
                 ),
@@ -135,12 +155,12 @@ class HomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton.icon(
-                  onPressed: () => context.go('/map'),
+                  onPressed: () => context.push('/map'),
                   icon: const Icon(Icons.map),
                   label: const Text('Carte'),
                 ),
                 ElevatedButton.icon(
-                  onPressed: () => context.go('/quote'),
+                  onPressed: () => context.push('/quote'),
                   icon: const Icon(Icons.calculate),
                   label: const Text('Cotation'),
                 ),
@@ -164,7 +184,7 @@ class DashboardScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.person),
-            onPressed: () => context.go('/profile'),
+            onPressed: () => context.push('/profile'),
           ),
         ],
       ),

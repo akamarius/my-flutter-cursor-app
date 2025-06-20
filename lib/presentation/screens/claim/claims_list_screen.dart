@@ -16,7 +16,10 @@ class _ClaimsListScreenState extends ConsumerState<ClaimsListScreen> {
   @override
   void initState() {
     super.initState();
-    _loadClaims();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadClaims();
+    });
+
   }
 
   Future<void> _loadClaims() async {
@@ -61,7 +64,7 @@ class _ClaimsListScreenState extends ConsumerState<ClaimsListScreen> {
         leading: Navigator.of(context).canPop()
             ? IconButton(
                 icon: const Icon(Icons.arrow_back),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => context.pop(),
               )
             : null,
         title: const Text('Mes sinistres'),

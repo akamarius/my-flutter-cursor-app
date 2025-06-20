@@ -1,12 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_flutter_app/domain/entities/user.dart';
 import 'package:my_flutter_app/domain/repositories/auth_repository.dart';
+import 'package:my_flutter_app/data/repositories/auth_repository_impl.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  throw UnimplementedError('AuthRepository not initialized');
+  return AuthRepositoryImpl();
 });
 
-final authStateProvider = StateNotifierProvider<AuthNotifier, AsyncValue<User?>>((ref) {
+final authStateProvider =
+    StateNotifierProvider<AuthNotifier, AsyncValue<User?>>((ref) {
   final repository = ref.watch(authRepositoryProvider);
   return AuthNotifier(repository);
 });
@@ -30,7 +32,8 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
   Future<void> signInWithEmailAndPassword(String email, String password) async {
     state = const AsyncValue.loading();
     try {
-      final user = await _repository.signInWithEmailAndPassword(email, password);
+      final user =
+          await _repository.signInWithEmailAndPassword(email, password);
       state = AsyncValue.data(user);
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);
@@ -72,4 +75,4 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
       state = AsyncValue.error(e, stack);
     }
   }
-} 
+}

@@ -21,7 +21,8 @@ class MockQuoteApi implements QuoteApi {
 
     return Quote(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
-      userId: 'current_user_id', // This will be replaced by the actual user ID
+      userId:
+          'ZaGt6Hxn1Uey3Uqx8tBXzSsVxI33', // This will be replaced by the actual user ID
       brand: request.brand,
       model: request.model,
       year: request.year,
@@ -64,7 +65,7 @@ class MockQuoteApi implements QuoteApi {
     await Future.delayed(const Duration(seconds: 1));
     return Quote(
       id: quoteId,
-      userId: 'current_user_id',
+      userId: 'ZaGt6Hxn1Uey3Uqx8tBXzSsVxI33',
       brand: 'Renault',
       model: 'Clio',
       year: 2018,
@@ -73,4 +74,4 @@ class MockQuoteApi implements QuoteApi {
       createdAt: DateTime.now().subtract(const Duration(days: 30)),
     );
   }
-} 
+}
