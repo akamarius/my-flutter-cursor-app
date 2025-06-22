@@ -196,6 +196,8 @@ class AuthRepositoryImpl implements AuthRepository {
         role: UserRole.values.firstWhere(
           (role) => role.toString().split('.').last == userData['role'],
         ),
+        firstName: userData['firstName'],
+        lastName: userData['lastName'],
         phoneNumber: userCredential.user!.phoneNumber,
         displayName: userCredential.user!.displayName,
         photoUrl: userCredential.user!.photoURL,
@@ -221,7 +223,8 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<User> signUp(String email, String password, UserRole role) async {
+  Future<User> signUp(String firstName, String lastName, String email,
+      String password, UserRole role) async {
     try {
       final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
@@ -232,11 +235,15 @@ class AuthRepositoryImpl implements AuthRepository {
         id: userCredential.user!.uid,
         email: email,
         role: role,
+        firstName: firstName,
+        lastName: lastName,
       );
 
       await _firestore.collection('users').doc(user.id).set({
         'email': email,
         'role': role.toString().split('.').last,
+        'firstName': firstName,
+        'lastName': lastName,
         'createdAt': FieldValue.serverTimestamp(),
       });
 
@@ -277,6 +284,8 @@ class AuthRepositoryImpl implements AuthRepository {
         role: UserRole.values.firstWhere(
           (role) => role.toString().split('.').last == userData['role'],
         ),
+        firstName: userData['firstName'],
+        lastName: userData['lastName'],
         phoneNumber: firebaseUser.phoneNumber,
         displayName: firebaseUser.displayName,
         photoUrl: firebaseUser.photoURL,
@@ -309,6 +318,43 @@ class AuthRepositoryImpl implements AuthRepository {
       });
     } catch (e) {
       throw Exception('Failed to update profile: $e');
+    }
+  }
+
+  @override
+  Future<void> updateUserProfileWithNames({
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phoneNumber,
+  }) async {
+    try {
+      final user = _firebaseAuth.currentUser;
+      if (user == null) throw Exception('No user logged in');
+
+      // Mettre à jour l'email Firebase si fourni
+      if (email != null && email != user.email) {
+        await user.updateEmail(email);
+      }
+
+      // Mettre à jour le displayName avec firstName + lastName
+      String? displayName;
+      if (firstName != null || lastName != null) {
+        displayName = '${firstName ?? ''} ${lastName ?? ''}'.trim();
+        await user.updateDisplayName(displayName);
+      }
+
+      // Mettre à jour Firestore
+      final updates = <String, dynamic>{};
+      if (firstName != null) updates['firstName'] = firstName;
+      if (lastName != null) updates['lastName'] = lastName;
+      if (email != null) updates['email'] = email;
+      if (phoneNumber != null) updates['phoneNumber'] = phoneNumber;
+      if (displayName != null) updates['displayName'] = displayName;
+
+      await _firestore.collection('users').doc(user.uid).update(updates);
+    } catch (e) {
+      throw Exception('Failed to update profile with names: $e');
     }
   }
 }

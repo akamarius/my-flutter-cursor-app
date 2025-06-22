@@ -40,10 +40,12 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
     }
   }
 
-  Future<void> signUp(String email, String password, UserRole role) async {
+  Future<void> signUp(String firstName, String lastName, String email,
+      String password, UserRole role) async {
     state = const AsyncValue.loading();
     try {
-      final user = await _repository.signUp(email, password, role);
+      final user =
+          await _repository.signUp(firstName, lastName, email, password, role);
       state = AsyncValue.data(user);
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);
@@ -68,6 +70,25 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
       await _repository.updateUserProfile(
         displayName: displayName,
         photoUrl: photoUrl,
+        phoneNumber: phoneNumber,
+      );
+      await _init();
+    } catch (e, stack) {
+      state = AsyncValue.error(e, stack);
+    }
+  }
+
+  Future<void> updateProfileWithNames({
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phoneNumber,
+  }) async {
+    try {
+      await _repository.updateUserProfileWithNames(
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
         phoneNumber: phoneNumber,
       );
       await _init();

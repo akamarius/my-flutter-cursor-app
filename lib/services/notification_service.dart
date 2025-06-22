@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 final notificationServiceProvider = Provider<NotificationService>((ref) {
   return NotificationService();
@@ -94,10 +95,50 @@ class NotificationService {
       payload: payload,
     );
   }
+
+  /// Crée des notifications de test pour l'utilisateur
+  Future<void> createTestNotifications(String userId) async {
+    final firestore = FirebaseFirestore.instance;
+    final notifications = [
+      {
+        'userId': 'ZaGt6Hxn1Uey3Uqx8tBXzSsVxI33',
+        'title': 'Nouveau sinistre déclaré',
+        'message': 'Votre sinistre #12345 a été enregistré avec succès.',
+        'timestamp': FieldValue.serverTimestamp(),
+        'status': 'unread',
+        'type': 'claim',
+        'actionUrl': '/claims/12345',
+      },
+      {
+        'userId': 'ZaGt6Hxn1Uey3Uqx8tBXzSsVxI33',
+        'title': 'Mise à jour du statut',
+        'message': 'Le statut de votre sinistre #12345 a été mis à jour.',
+        'timestamp': FieldValue.serverTimestamp(),
+        'status': 'unread',
+        'type': 'update',
+        'actionUrl': '/claims/12345',
+      },
+      {
+        'userId': 'ZaGt6Hxn1Uey3Uqx8tBXzSsVxI33',
+        'title': 'Rappel de rendez-vous',
+        'message': 'N\'oubliez pas votre rendez-vous demain à 14h00.',
+        'timestamp': FieldValue.serverTimestamp(),
+        'status': 'read',
+        'type': 'reminder',
+      },
+    ];
+
+    final batch = firestore.batch();
+    for (final notification in notifications) {
+      final docRef = firestore.collection('notifications').doc();
+      batch.set(docRef, notification);
+    }
+    await batch.commit();
+  }
 }
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // Handle background messages
   print('Handling background message: ${message.messageId}');
-} 
+}

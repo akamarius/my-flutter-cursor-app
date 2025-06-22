@@ -18,6 +18,8 @@ mixin _$User {
   String get id;
   String get email;
   UserRole get role;
+  String? get firstName;
+  String? get lastName;
   String? get phoneNumber;
   String? get displayName;
   String? get photoUrl;
@@ -40,6 +42,10 @@ mixin _$User {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.role, role) || other.role == role) &&
+            (identical(other.firstName, firstName) ||
+                other.firstName == firstName) &&
+            (identical(other.lastName, lastName) ||
+                other.lastName == lastName) &&
             (identical(other.phoneNumber, phoneNumber) ||
                 other.phoneNumber == phoneNumber) &&
             (identical(other.displayName, displayName) ||
@@ -50,12 +56,12 @@ mixin _$User {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, email, role, phoneNumber, displayName, photoUrl);
+  int get hashCode => Object.hash(runtimeType, id, email, role, firstName,
+      lastName, phoneNumber, displayName, photoUrl);
 
   @override
   String toString() {
-    return 'User(id: $id, email: $email, role: $role, phoneNumber: $phoneNumber, displayName: $displayName, photoUrl: $photoUrl)';
+    return 'User(id: $id, email: $email, role: $role, firstName: $firstName, lastName: $lastName, phoneNumber: $phoneNumber, displayName: $displayName, photoUrl: $photoUrl)';
   }
 }
 
@@ -68,6 +74,8 @@ abstract mixin class $UserCopyWith<$Res> {
       {String id,
       String email,
       UserRole role,
+      String? firstName,
+      String? lastName,
       String? phoneNumber,
       String? displayName,
       String? photoUrl});
@@ -88,6 +96,8 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
     Object? id = null,
     Object? email = null,
     Object? role = null,
+    Object? firstName = freezed,
+    Object? lastName = freezed,
     Object? phoneNumber = freezed,
     Object? displayName = freezed,
     Object? photoUrl = freezed,
@@ -105,6 +115,14 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
           ? _self.role
           : role // ignore: cast_nullable_to_non_nullable
               as UserRole,
+      firstName: freezed == firstName
+          ? _self.firstName
+          : firstName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      lastName: freezed == lastName
+          ? _self.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
+              as String?,
       phoneNumber: freezed == phoneNumber
           ? _self.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
@@ -128,6 +146,8 @@ class _User implements User {
       {required this.id,
       required this.email,
       required this.role,
+      this.firstName,
+      this.lastName,
       this.phoneNumber,
       this.displayName,
       this.photoUrl});
@@ -139,6 +159,10 @@ class _User implements User {
   final String email;
   @override
   final UserRole role;
+  @override
+  final String? firstName;
+  @override
+  final String? lastName;
   @override
   final String? phoneNumber;
   @override
@@ -169,6 +193,10 @@ class _User implements User {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.role, role) || other.role == role) &&
+            (identical(other.firstName, firstName) ||
+                other.firstName == firstName) &&
+            (identical(other.lastName, lastName) ||
+                other.lastName == lastName) &&
             (identical(other.phoneNumber, phoneNumber) ||
                 other.phoneNumber == phoneNumber) &&
             (identical(other.displayName, displayName) ||
@@ -179,12 +207,12 @@ class _User implements User {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, email, role, phoneNumber, displayName, photoUrl);
+  int get hashCode => Object.hash(runtimeType, id, email, role, firstName,
+      lastName, phoneNumber, displayName, photoUrl);
 
   @override
   String toString() {
-    return 'User(id: $id, email: $email, role: $role, phoneNumber: $phoneNumber, displayName: $displayName, photoUrl: $photoUrl)';
+    return 'User(id: $id, email: $email, role: $role, firstName: $firstName, lastName: $lastName, phoneNumber: $phoneNumber, displayName: $displayName, photoUrl: $photoUrl)';
   }
 }
 
@@ -198,6 +226,8 @@ abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       {String id,
       String email,
       UserRole role,
+      String? firstName,
+      String? lastName,
       String? phoneNumber,
       String? displayName,
       String? photoUrl});
@@ -218,6 +248,8 @@ class __$UserCopyWithImpl<$Res> implements _$UserCopyWith<$Res> {
     Object? id = null,
     Object? email = null,
     Object? role = null,
+    Object? firstName = freezed,
+    Object? lastName = freezed,
     Object? phoneNumber = freezed,
     Object? displayName = freezed,
     Object? photoUrl = freezed,
@@ -235,6 +267,14 @@ class __$UserCopyWithImpl<$Res> implements _$UserCopyWith<$Res> {
           ? _self.role
           : role // ignore: cast_nullable_to_non_nullable
               as UserRole,
+      firstName: freezed == firstName
+          ? _self.firstName
+          : firstName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      lastName: freezed == lastName
+          ? _self.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
+              as String?,
       phoneNumber: freezed == phoneNumber
           ? _self.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable

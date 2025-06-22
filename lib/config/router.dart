@@ -10,11 +10,16 @@ import 'package:my_flutter_app/presentation/screens/map/offline_map_screen.dart'
 import 'package:my_flutter_app/presentation/screens/profile/profile_screen.dart';
 import 'package:my_flutter_app/presentation/screens/quote/quote_screen.dart';
 import 'package:my_flutter_app/presentation/providers/auth_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_flutter_app/presentation/providers/notification_provider.dart';
+import 'package:my_flutter_app/domain/entities/notification.dart';
+import 'package:my_flutter_app/presentation/screens/notification/notifications_list_screen.dart';
+import 'package:my_flutter_app/presentation/screens/notification/notification_detail_screen.dart';
 
 part 'router.g.dart';
 
 @riverpod
-GoRouter router(RouterRef ref) {
+GoRouter router(Ref ref) {
   final authState = ref.watch(authStateProvider);
 
   return GoRouter(
@@ -93,20 +98,76 @@ GoRouter router(RouterRef ref) {
         path: '/quote',
         builder: (context, state) => const QuoteScreen(),
       ),
+
+      // Route notifications
+      GoRoute(
+        path: '/notifications',
+        builder: (context, state) => const NotificationsListScreen(),
+      ),
+      GoRoute(
+        path: '/notifications/:id',
+        builder: (context, state) {
+          final notifId = state.pathParameters['id']!;
+          return NotificationDetailScreen(notificationId: notifId);
+        },
+      ),
     ],
   );
 }
 
 // Écrans temporaires pour les routes manquantes
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateProvider);
+    final user = authState.value;
+    final userId = user?.id ?? '';
+    final unreadCountAsync = ref.watch(unreadCountProvider(userId));
     return Scaffold(
       appBar: AppBar(
         title: const Text('Gestion Sinistres'),
         actions: [
+          Stack(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.notifications),
+                //onPressed: () => _showNotificationsDialog(context, ref, userId),
+                onPressed: () => context.push('/notifications'),
+              ),
+              Positioned(
+                right: 5,
+                top: 5,
+                child: unreadCountAsync.when(
+                  data: (count) => count > 0
+                      ? Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          constraints: const BoxConstraints(
+                            minWidth: 15,
+                            minHeight: 15,
+                          ),
+                          child: Text(
+                            '$count',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                  loading: () => const SizedBox.shrink(),
+                  error: (_, __) => const SizedBox.shrink(),
+                ),
+              ),
+            ],
+          ),
           IconButton(
             icon: const Icon(Icons.person),
             onPressed: () => context.push('/profile'),
@@ -142,11 +203,19 @@ class HomeScreen extends StatelessWidget {
                   onPressed: () => context.push('/claims'),
                   icon: const Icon(Icons.list),
                   label: const Text('Mes Sinistres'),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(175, 40),
+                    maximumSize: const Size(175, 40),
+                  ),
                 ),
                 ElevatedButton.icon(
                   onPressed: () => context.push('/claims/new'),
                   icon: const Icon(Icons.add),
                   label: const Text('Nouveau Sinistre'),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(175, 40),
+                    maximumSize: const Size(175, 40),
+                  ),
                 ),
               ],
             ),
@@ -158,17 +227,89 @@ class HomeScreen extends StatelessWidget {
                   onPressed: () => context.push('/map'),
                   icon: const Icon(Icons.map),
                   label: const Text('Carte'),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(175, 40),
+                    maximumSize: const Size(175, 40),
+                  ),
                 ),
                 ElevatedButton.icon(
                   onPressed: () => context.push('/quote'),
                   icon: const Icon(Icons.calculate),
                   label: const Text('Cotation'),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(175, 40),
+                    maximumSize: const Size(175, 40),
+                  ),
                 ),
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  void _showNotificationsDialog(
+      BuildContext context, WidgetRef ref, String userId) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        final recentNotificationsAsync =
+            ref.watch(recentNotificationsProvider(userId));
+        return AlertDialog(
+          title: const Text('Notifications'),
+          content: SizedBox(
+            width: 350,
+            child: recentNotificationsAsync.when(
+              data: (notifications) => notifications.isEmpty
+                  ? const Text('Aucune notification')
+                  : ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: notifications.length,
+                      separatorBuilder: (_, __) => const Divider(),
+                      itemBuilder: (context, index) {
+                        final notif = notifications[index];
+                        return ListTile(
+                          leading: notif.status == NotificationStatus.unread
+                              ? const Icon(Icons.markunread, color: Colors.blue)
+                              : const Icon(Icons.drafts, color: Colors.grey),
+                          title: Text(notif.title),
+                          subtitle: Text(
+                            notif.message,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          trailing: notif.status == NotificationStatus.unread
+                              ? const Icon(Icons.circle,
+                                  color: Colors.red, size: 10)
+                              : null,
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context)
+                                .pushNamed('/notifications/${notif.id}');
+                          },
+                        );
+                      },
+                    ),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (e, _) => Text('Erreur: $e'),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Fermer'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pushNamed('/notifications');
+              },
+              child: const Text('Voir plus'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

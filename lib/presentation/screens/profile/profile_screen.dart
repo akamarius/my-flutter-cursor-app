@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_flutter_app/domain/entities/user.dart';
 import 'package:my_flutter_app/presentation/providers/auth_provider.dart';
+import 'package:my_flutter_app/services/notification_service.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -29,6 +31,29 @@ class ProfileScreen extends ConsumerWidget {
   }
 
   Widget _buildProfileContent(BuildContext context) {
+    return Consumer(
+      builder: (context, ref, child) {
+        final authState = ref.watch(authStateProvider);
+
+        return authState.when(
+          data: (user) => _buildProfileContentWithUser(context, user),
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stack) => Center(
+            child: Text('Erreur: $error'),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildProfileContentWithUser(BuildContext context, User? user) {
+    final displayName = user?.firstName != null && user?.lastName != null
+        ? '${user!.firstName} ${user.lastName}'
+        : user?.displayName ?? 'Utilisateur Démo';
+    final email = user?.email ?? 'demo@example.com';
+    final phoneNumber = user?.phoneNumber ?? 'Non renseigné';
+    final role = user?.role == UserRole.assure ? 'Assuré' : 'Prospect';
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -54,13 +79,25 @@ class ProfileScreen extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Utilisateur Démo',
-                          style: Theme.of(context).textTheme.titleLarge,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                displayName,
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
+                            ),
+                            /*IconButton(
+                              icon: const Icon(Icons.edit),
+                              tooltip: 'Modifier',
+                              onPressed: () =>
+                                  _showEditProfileDialog(context, user),
+                            ),*/
+                          ],
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'demo@example.com',
+                          email,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         const SizedBox(height: 8),
@@ -73,9 +110,9 @@ class ProfileScreen extends ConsumerWidget {
                             color: Colors.green,
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Text(
-                            'Assuré',
-                            style: TextStyle(
+                          child: Text(
+                            role,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -84,6 +121,12 @@ class ProfileScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
+                  ),
+                  const SizedBox(width: 16),
+                  IconButton(
+                    icon: const Icon(Icons.edit),
+                    tooltip: 'Modifier',
+                    onPressed: () => _showEditProfileDialog(context, user),
                   ),
                 ],
               ),
@@ -100,9 +143,9 @@ class ProfileScreen extends ConsumerWidget {
           const SizedBox(height: 16),
 
           _buildInfoCard(context, [
-            _buildInfoRow('Email', 'demo@example.com', Icons.email),
-            _buildInfoRow('Téléphone', '+33 1 23 45 67 89', Icons.phone),
-            _buildInfoRow('Rôle', 'Assuré', Icons.badge),
+            _buildInfoRow('Email', email, Icons.email),
+            _buildInfoRow('Téléphone', phoneNumber, Icons.phone),
+            _buildInfoRow('Rôle', role, Icons.badge),
           ]),
 
           const SizedBox(height: 24),
@@ -119,25 +162,38 @@ class ProfileScreen extends ConsumerWidget {
               'Mes sinistres',
               'Consulter l\'historique',
               Icons.list,
-              () => context.go('/claims'),
+              () => context.push('/claims'),
             ),
             _buildActionRow(
               'Nouveau sinistre',
               'Déclarer un sinistre',
               Icons.add_circle,
-              () => context.go('/claims/new'),
+              () => context.push('/claims/new'),
             ),
             _buildActionRow(
               'Carte des bureaux',
               'Localiser les bureaux',
               Icons.map,
-              () => context.go('/map'),
+              () => context.push('/map'),
             ),
             _buildActionRow(
               'Cotation',
               'Obtenir un devis',
               Icons.calculate,
-              () => context.go('/quote'),
+              () => context.push('/quote'),
+            ),
+            _buildActionRow(
+              'Notifications de test',
+              'Créer des notifications de test',
+              Icons.notifications_active,
+              () => _createTestNotifications(context, user),
+            ),
+            _buildActionRow(
+              'Notifications',
+              'Gérer les notifications',
+              Icons.notifications,
+              //() => _showNotificationSettings(context),
+              () => context.push('/notifications'),
             ),
           ]),
 
@@ -151,12 +207,6 @@ class ProfileScreen extends ConsumerWidget {
           const SizedBox(height: 16),
 
           _buildActionCard(context, [
-            _buildActionRow(
-              'Notifications',
-              'Gérer les notifications',
-              Icons.notifications,
-              () => _showNotificationSettings(context),
-            ),
             _buildActionRow(
               'Sécurité',
               'Changer le mot de passe',
@@ -297,6 +347,140 @@ class ProfileScreen extends ConsumerWidget {
         Text('Application de gestion de sinistres développée avec Flutter.'),
         SizedBox(height: 16),
         Text('© 2024 - Tous droits réservés'),
+      ],
+    );
+  }
+
+  void _showEditProfileDialog(BuildContext context, User? user) {
+    showDialog(
+      context: context,
+      builder: (context) => EditProfileDialog(user: user),
+    );
+  }
+
+  void _createTestNotifications(BuildContext context, User? user) async {
+    if (user == null) return;
+
+    try {
+      final notificationService = NotificationService();
+      await notificationService.createTestNotifications(user.id);
+
+      if (!context.mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Notifications de test créées !'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } catch (e) {
+      if (!context.mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur: $e'),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+}
+
+class EditProfileDialog extends StatefulWidget {
+  final User? user;
+
+  const EditProfileDialog({super.key, this.user});
+
+  @override
+  State<EditProfileDialog> createState() => _EditProfileDialogState();
+}
+
+class _EditProfileDialogState extends State<EditProfileDialog> {
+  final _formKey = GlobalKey<FormState>();
+  String? _firstName;
+  String? _lastName;
+  String? _email;
+  String? _phone;
+
+  @override
+  void initState() {
+    super.initState();
+    _firstName = widget.user?.firstName;
+    _lastName = widget.user?.lastName;
+    _email = widget.user?.email;
+    _phone = widget.user?.phoneNumber;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Modifier le profil'),
+      content: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                initialValue: _firstName,
+                decoration: const InputDecoration(labelText: 'Prénom'),
+                onSaved: (val) => _firstName = val,
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Champ requis' : null,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                initialValue: _lastName,
+                decoration: const InputDecoration(labelText: 'Nom'),
+                onSaved: (val) => _lastName = val,
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Champ requis' : null,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                initialValue: _email,
+                decoration: const InputDecoration(labelText: 'Email'),
+                onSaved: (val) => _email = val,
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Champ requis' : null,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                initialValue: _phone,
+                decoration: const InputDecoration(labelText: 'Téléphone'),
+                onSaved: (val) => _phone = val,
+              ),
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Annuler'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              _formKey.currentState!.save();
+
+              // Appeler la logique de mise à jour
+              final container = ProviderScope.containerOf(context);
+              container.read(authStateProvider.notifier).updateProfileWithNames(
+                    firstName: _firstName,
+                    lastName: _lastName,
+                    email: _email,
+                    phoneNumber: _phone,
+                  );
+
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Profil mis à jour !')),
+              );
+            }
+          },
+          child: const Text('Enregistrer'),
+        ),
       ],
     );
   }
