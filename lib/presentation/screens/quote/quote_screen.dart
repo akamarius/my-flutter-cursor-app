@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_flutter_app/presentation/widgets/animated_button.dart';
+import 'package:go_router/go_router.dart';
 
 class QuoteScreen extends ConsumerStatefulWidget {
   const QuoteScreen({super.key});
@@ -10,83 +10,6 @@ class QuoteScreen extends ConsumerStatefulWidget {
 }
 
 class _QuoteScreenState extends ConsumerState<QuoteScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _addressController = TextEditingController();
-  String _selectedInsuranceType = 'Auto';
-  String _selectedCoverage = 'Comprehensive';
-  bool _isLoading = false;
-
-  final List<String> _insuranceTypes = [
-    'Auto',
-    'Habitation',
-    'Vie',
-    'Santé',
-    'Voyage',
-  ];
-
-  final List<String> _coverageOptions = [
-    'Basic',
-    'Standard',
-    'Comprehensive',
-    'Premium',
-  ];
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
-    _addressController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _submitQuote() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    setState(() => _isLoading = true);
-
-    try {
-      // Simulation d'une demande de cotation
-      await Future.delayed(const Duration(seconds: 2));
-
-      if (mounted) {
-        _showQuoteResult();
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erreur: $e')),
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
-    }
-  }
-
-  void _showQuoteResult() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Demande de cotation envoyée'),
-        content: const Text(
-          'Votre demande de cotation a été envoyée avec succès. '
-          'Un expert vous contactera dans les plus brefs délais.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,223 +20,249 @@ class _QuoteScreenState extends ConsumerState<QuoteScreen> {
                 onPressed: () => Navigator.of(context).pop(),
               )
             : null,
-        title: const Text('Demande de cotation'),
+        title: const Text('Cotations'),
+        //actions: [
+        //  IconButton(
+        //    icon: const Icon(Icons.list),
+        //    onPressed: () {
+        //      Navigator.pushNamed(context, '/quote/list');
+        //    },
+        //  ),
+        //],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // En-tête
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      const Icon(
-                        Icons.calculate,
-                        size: 48,
-                        color: Colors.blue,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // En-tête
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    const Icon(
+                      Icons.calculate,
+                      size: 48,
+                      color: Colors.blue,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Service de Cotation',
+                      style: Theme.of(context).textTheme.titleLarge,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Obtenez des devis personnalisés pour tous vos besoins d\'assurance',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // Options principales
+            Row(
+              children: [
+                Expanded(
+                  child: Card(
+                    child: InkWell(
+                      onTap: () {
+                        context.push('/quote/selection');
+                      },
+                      borderRadius: BorderRadius.circular(12),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.withOpacity(0.1),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.add,
+                                size: 32,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              'Nouvelle cotation',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Demander un devis',
+                              style: Theme.of(context).textTheme.bodySmall,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Obtenez votre devis personnalisé',
-                        style: Theme.of(context).textTheme.titleLarge,
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Remplissez le formulaire ci-dessous pour recevoir une cotation adaptée à vos besoins',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-
-              const SizedBox(height: 24),
-
-              // Informations personnelles
-              Text(
-                'Informations personnelles',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 16),
-
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Nom complet *',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer votre nom';
-                  }
-                  return null;
-                },
-              ),
-
-              const SizedBox(height: 16),
-
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email *',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.email),
-                ),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer votre email';
-                  }
-                  if (!value.contains('@')) {
-                    return 'Veuillez entrer un email valide';
-                  }
-                  return null;
-                },
-              ),
-
-              const SizedBox(height: 16),
-
-              TextFormField(
-                controller: _phoneController,
-                decoration: const InputDecoration(
-                  labelText: 'Téléphone *',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.phone),
-                ),
-                keyboardType: TextInputType.phone,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer votre téléphone';
-                  }
-                  return null;
-                },
-              ),
-
-              const SizedBox(height: 16),
-
-              TextFormField(
-                controller: _addressController,
-                decoration: const InputDecoration(
-                  labelText: 'Adresse',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.location_on),
-                ),
-                maxLines: 2,
-              ),
-
-              const SizedBox(height: 24),
-
-              // Type d'assurance
-              Text(
-                'Type d\'assurance',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 16),
-
-              DropdownButtonFormField<String>(
-                value: _selectedInsuranceType,
-                decoration: const InputDecoration(
-                  labelText: 'Type d\'assurance *',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.security),
-                ),
-                items: _insuranceTypes.map((type) {
-                  return DropdownMenuItem(
-                    value: type,
-                    child: Text(type),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() => _selectedInsuranceType = value!);
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez sélectionner un type d\'assurance';
-                  }
-                  return null;
-                },
-              ),
-
-              const SizedBox(height: 16),
-
-              // Niveau de couverture
-              DropdownButtonFormField<String>(
-                value: _selectedCoverage,
-                decoration: const InputDecoration(
-                  labelText: 'Niveau de couverture *',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.security),
-                ),
-                items: _coverageOptions.map((coverage) {
-                  return DropdownMenuItem(
-                    value: coverage,
-                    child: Text(coverage),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() => _selectedCoverage = value!);
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez sélectionner un niveau de couverture';
-                  }
-                  return null;
-                },
-              ),
-
-              const SizedBox(height: 24),
-
-              // Informations supplémentaires
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.info, color: Colors.blue),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Informations importantes',
-                            style: Theme.of(context).textTheme.titleSmall,
-                          ),
-                        ],
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Card(
+                    child: InkWell(
+                      onTap: () {
+                        context.push('/quote/list');
+                      },
+                      borderRadius: BorderRadius.circular(12),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.green.withOpacity(0.1),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.list_alt,
+                                size: 32,
+                                color: Colors.green,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              'Mes cotations',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Voir l\'historique',
+                              style: Theme.of(context).textTheme.bodySmall,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        '• Votre demande sera traitée dans les 24h\n'
-                        '• Un expert vous contactera pour finaliser votre devis\n'
-                        '• Aucun engagement de votre part',
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
+              ],
+            ),
 
-              const SizedBox(height: 24),
+            const SizedBox(height: 24),
 
-              // Bouton de soumission
-              AnimatedButton(
-                text: 'Demander un devis',
-                onPressed: _submitQuote,
-                isLoading: _isLoading,
-                icon: Icons.send,
-                backgroundColor: Colors.blue,
-                textColor: Colors.white,
+            // Informations sur les types d'assurance
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.info, color: Colors.blue),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Types d\'assurance disponibles',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    _buildInsuranceTypeInfo('Auto',
+                        'Assurance automobile complète', Icons.directions_car),
+                    _buildInsuranceTypeInfo('Habitation',
+                        'Protection de votre logement', Icons.home),
+                    _buildInsuranceTypeInfo(
+                        'Épargne', 'Épargne et investissement', Icons.savings),
+                    _buildInsuranceTypeInfo(
+                        'Décès', 'Protection de votre famille', Icons.favorite),
+                    _buildInsuranceTypeInfo(
+                        'Santé', 'Couverture médicale', Icons.local_hospital),
+                    _buildInsuranceTypeInfo(
+                        'Voyage', 'Assurance voyage', Icons.flight),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // Informations importantes
+            Card(
+              color: Colors.orange.withOpacity(0.1),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.lightbulb, color: Colors.orange),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Informations importantes',
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      '• Votre demande sera traitée dans les 24h\n'
+                      '• Un expert vous contactera pour finaliser votre devis\n'
+                      '• Aucun engagement de votre part\n'
+                      '• Devis gratuit et sans obligation',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildInsuranceTypeInfo(
+      String title, String description, IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: Colors.grey),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  description,
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

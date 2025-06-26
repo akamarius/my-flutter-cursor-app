@@ -19,7 +19,6 @@ class _ClaimsListScreenState extends ConsumerState<ClaimsListScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadClaims();
     });
-
   }
 
   Future<void> _loadClaims() async {
@@ -68,12 +67,6 @@ class _ClaimsListScreenState extends ConsumerState<ClaimsListScreen> {
               )
             : null,
         title: const Text('Mes sinistres'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () => context.push('/claims/new'),
-          ),
-        ],
       ),
       body: RefreshIndicator(
         onRefresh: _loadClaims,
@@ -148,6 +141,11 @@ class _ClaimsListScreenState extends ConsumerState<ClaimsListScreen> {
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.push('/claims/new'),
+        child: const Icon(Icons.add), // Icône par défaut
+        tooltip: 'Nouveau Sinistre', // Texte affiché au survol
       ),
     );
   }

@@ -9,6 +9,13 @@ import 'package:my_flutter_app/presentation/screens/claim/claim_details_screen.d
 import 'package:my_flutter_app/presentation/screens/map/offline_map_screen.dart';
 import 'package:my_flutter_app/presentation/screens/profile/profile_screen.dart';
 import 'package:my_flutter_app/presentation/screens/quote/quote_screen.dart';
+import 'package:my_flutter_app/presentation/screens/quote/insurance_type_selection_screen.dart';
+import 'package:my_flutter_app/presentation/screens/quote/auto_quote_screen.dart';
+import 'package:my_flutter_app/presentation/screens/quote/habitation_quote_screen.dart';
+import 'package:my_flutter_app/presentation/screens/quote/voyage_quote_screen.dart';
+import 'package:my_flutter_app/presentation/screens/quote/sante_quote_screen.dart';
+import 'package:my_flutter_app/presentation/screens/quote/quotes_list_screen.dart';
+import 'package:my_flutter_app/presentation/screens/quote/quote_details_screen.dart';
 import 'package:my_flutter_app/presentation/providers/auth_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_flutter_app/presentation/providers/notification_provider.dart';
@@ -93,10 +100,41 @@ GoRouter router(Ref ref) {
         builder: (context, state) => const ProfileScreen(),
       ),
 
-      // Route de cotation
+      // Routes de cotation
       GoRoute(
         path: '/quote',
         builder: (context, state) => const QuoteScreen(),
+      ),
+      GoRoute(
+        path: '/quote/selection',
+        builder: (context, state) => const InsuranceTypeSelectionScreen(),
+      ),
+      GoRoute(
+        path: '/quote/list',
+        builder: (context, state) => const QuotesListScreen(),
+      ),
+      GoRoute(
+        path: '/quote/auto',
+        builder: (context, state) => const AutoQuoteScreen(),
+      ),
+      GoRoute(
+        path: '/quote/habitation',
+        builder: (context, state) => const HabitationQuoteScreen(),
+      ),
+      GoRoute(
+        path: '/quote/voyage',
+        builder: (context, state) => const VoyageQuoteScreen(),
+      ),
+      GoRoute(
+        path: '/quote/sante',
+        builder: (context, state) => const SanteQuoteScreen(),
+      ),
+      GoRoute(
+        path: '/quote/details/:id',
+        builder: (context, state) {
+          final quoteId = state.pathParameters['id']!;
+          return QuoteDetailsScreen(quoteId: quoteId);
+        },
       ),
 
       // Route notifications
@@ -127,7 +165,7 @@ class HomeScreen extends ConsumerWidget {
     final unreadCountAsync = ref.watch(unreadCountProvider(userId));
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gestion Sinistres'),
+        title: const Text('Accueil'),
         actions: [
           Stack(
             children: [
@@ -200,6 +238,15 @@ class HomeScreen extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton.icon(
+                  onPressed: () => {},
+                  icon: const Icon(Icons.article),
+                  label: const Text('Mes Contrats'),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(175, 40),
+                    maximumSize: const Size(175, 40),
+                  ),
+                ),
+                ElevatedButton.icon(
                   onPressed: () => context.push('/claims'),
                   icon: const Icon(Icons.list),
                   label: const Text('Mes Sinistres'),
@@ -208,15 +255,15 @@ class HomeScreen extends ConsumerWidget {
                     maximumSize: const Size(175, 40),
                   ),
                 ),
-                ElevatedButton.icon(
-                  onPressed: () => context.push('/claims/new'),
-                  icon: const Icon(Icons.add),
-                  label: const Text('Nouveau Sinistre'),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(175, 40),
-                    maximumSize: const Size(175, 40),
-                  ),
-                ),
+                //ElevatedButton.icon(
+                //  onPressed: () => context.push('/claims/new'),
+                //  icon: const Icon(Icons.add),
+                //  label: const Text('Nouveau Sinistre'),
+                //  style: ElevatedButton.styleFrom(
+                //    minimumSize: const Size(175, 40),
+                //    maximumSize: const Size(175, 40),
+                //  ),
+                //),
               ],
             ),
             const SizedBox(height: 16),

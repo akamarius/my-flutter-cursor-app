@@ -6,12 +6,14 @@ final quoteRepositoryProvider = Provider<QuoteRepository>((ref) {
   throw UnimplementedError('QuoteRepository not initialized');
 });
 
-final quoteStateProvider = StateNotifierProvider<QuoteNotifier, AsyncValue<List<Quote>>>((ref) {
+final quoteStateProvider =
+    StateNotifierProvider<QuoteNotifier, AsyncValue<List<Quote>>>((ref) {
   final repository = ref.watch(quoteRepositoryProvider);
   return QuoteNotifier(repository);
 });
 
-final quoteRequestProvider = StateNotifierProvider<QuoteRequestNotifier, AsyncValue<Quote?>>((ref) {
+final quoteRequestProvider =
+    StateNotifierProvider<QuoteRequestNotifier, AsyncValue<Quote?>>((ref) {
   final repository = ref.watch(quoteRepositoryProvider);
   return QuoteRequestNotifier(repository);
 });
@@ -26,6 +28,16 @@ class QuoteNotifier extends StateNotifier<AsyncValue<List<Quote>>> {
     try {
       final quotes = await _repository.getUserQuotes(userId);
       state = AsyncValue.data(quotes);
+    } catch (e, stack) {
+      state = AsyncValue.error(e, stack);
+    }
+  }
+
+  Future<void> loadQuoteDetails(String quoteId) async {
+    state = const AsyncValue.loading();
+    try {
+      final quote = await _repository.getQuoteById(quoteId);
+      state = AsyncValue.data([quote]);
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);
     }
@@ -46,4 +58,4 @@ class QuoteRequestNotifier extends StateNotifier<AsyncValue<Quote?>> {
       state = AsyncValue.error(e, stack);
     }
   }
-} 
+}

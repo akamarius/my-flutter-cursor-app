@@ -17,12 +17,14 @@ T _$identity<T>(T value) => value;
 mixin _$Quote {
   String get id;
   String get userId;
-  String get brand;
-  String get model;
-  int get year;
-  bool get hasAccidents;
-  double get amount;
+  InsuranceType get insuranceType;
+  Map<String, dynamic> get requestData;
   DateTime get createdAt;
+  QuoteStatus get status;
+  String? get assignedAgent;
+  double? get estimatedAmount;
+  Map<String, dynamic>? get responseData;
+  DateTime? get updatedAt;
   String? get notes;
 
   /// Create a copy of Quote
@@ -42,25 +44,43 @@ mixin _$Quote {
             other is Quote &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.brand, brand) || other.brand == brand) &&
-            (identical(other.model, model) || other.model == model) &&
-            (identical(other.year, year) || other.year == year) &&
-            (identical(other.hasAccidents, hasAccidents) ||
-                other.hasAccidents == hasAccidents) &&
-            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.insuranceType, insuranceType) ||
+                other.insuranceType == insuranceType) &&
+            const DeepCollectionEquality()
+                .equals(other.requestData, requestData) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.assignedAgent, assignedAgent) ||
+                other.assignedAgent == assignedAgent) &&
+            (identical(other.estimatedAmount, estimatedAmount) ||
+                other.estimatedAmount == estimatedAmount) &&
+            const DeepCollectionEquality()
+                .equals(other.responseData, responseData) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
             (identical(other.notes, notes) || other.notes == notes));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, userId, brand, model, year,
-      hasAccidents, amount, createdAt, notes);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      userId,
+      insuranceType,
+      const DeepCollectionEquality().hash(requestData),
+      createdAt,
+      status,
+      assignedAgent,
+      estimatedAmount,
+      const DeepCollectionEquality().hash(responseData),
+      updatedAt,
+      notes);
 
   @override
   String toString() {
-    return 'Quote(id: $id, userId: $userId, brand: $brand, model: $model, year: $year, hasAccidents: $hasAccidents, amount: $amount, createdAt: $createdAt, notes: $notes)';
+    return 'Quote(id: $id, userId: $userId, insuranceType: $insuranceType, requestData: $requestData, createdAt: $createdAt, status: $status, assignedAgent: $assignedAgent, estimatedAmount: $estimatedAmount, responseData: $responseData, updatedAt: $updatedAt, notes: $notes)';
   }
 }
 
@@ -72,12 +92,14 @@ abstract mixin class $QuoteCopyWith<$Res> {
   $Res call(
       {String id,
       String userId,
-      String brand,
-      String model,
-      int year,
-      bool hasAccidents,
-      double amount,
+      InsuranceType insuranceType,
+      Map<String, dynamic> requestData,
       DateTime createdAt,
+      QuoteStatus status,
+      String? assignedAgent,
+      double? estimatedAmount,
+      Map<String, dynamic>? responseData,
+      DateTime? updatedAt,
       String? notes});
 }
 
@@ -95,12 +117,14 @@ class _$QuoteCopyWithImpl<$Res> implements $QuoteCopyWith<$Res> {
   $Res call({
     Object? id = null,
     Object? userId = null,
-    Object? brand = null,
-    Object? model = null,
-    Object? year = null,
-    Object? hasAccidents = null,
-    Object? amount = null,
+    Object? insuranceType = null,
+    Object? requestData = null,
     Object? createdAt = null,
+    Object? status = null,
+    Object? assignedAgent = freezed,
+    Object? estimatedAmount = freezed,
+    Object? responseData = freezed,
+    Object? updatedAt = freezed,
     Object? notes = freezed,
   }) {
     return _then(_self.copyWith(
@@ -112,30 +136,38 @@ class _$QuoteCopyWithImpl<$Res> implements $QuoteCopyWith<$Res> {
           ? _self.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      brand: null == brand
-          ? _self.brand
-          : brand // ignore: cast_nullable_to_non_nullable
-              as String,
-      model: null == model
-          ? _self.model
-          : model // ignore: cast_nullable_to_non_nullable
-              as String,
-      year: null == year
-          ? _self.year
-          : year // ignore: cast_nullable_to_non_nullable
-              as int,
-      hasAccidents: null == hasAccidents
-          ? _self.hasAccidents
-          : hasAccidents // ignore: cast_nullable_to_non_nullable
-              as bool,
-      amount: null == amount
-          ? _self.amount
-          : amount // ignore: cast_nullable_to_non_nullable
-              as double,
+      insuranceType: null == insuranceType
+          ? _self.insuranceType
+          : insuranceType // ignore: cast_nullable_to_non_nullable
+              as InsuranceType,
+      requestData: null == requestData
+          ? _self.requestData
+          : requestData // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
       createdAt: null == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      status: null == status
+          ? _self.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as QuoteStatus,
+      assignedAgent: freezed == assignedAgent
+          ? _self.assignedAgent
+          : assignedAgent // ignore: cast_nullable_to_non_nullable
+              as String?,
+      estimatedAmount: freezed == estimatedAmount
+          ? _self.estimatedAmount
+          : estimatedAmount // ignore: cast_nullable_to_non_nullable
+              as double?,
+      responseData: freezed == responseData
+          ? _self.responseData
+          : responseData // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>?,
+      updatedAt: freezed == updatedAt
+          ? _self.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       notes: freezed == notes
           ? _self.notes
           : notes // ignore: cast_nullable_to_non_nullable
@@ -150,13 +182,17 @@ class _Quote implements Quote {
   const _Quote(
       {required this.id,
       required this.userId,
-      required this.brand,
-      required this.model,
-      required this.year,
-      required this.hasAccidents,
-      required this.amount,
+      required this.insuranceType,
+      required final Map<String, dynamic> requestData,
       required this.createdAt,
-      this.notes});
+      required this.status,
+      this.assignedAgent,
+      this.estimatedAmount,
+      final Map<String, dynamic>? responseData,
+      this.updatedAt,
+      this.notes})
+      : _requestData = requestData,
+        _responseData = responseData;
   factory _Quote.fromJson(Map<String, dynamic> json) => _$QuoteFromJson(json);
 
   @override
@@ -164,17 +200,35 @@ class _Quote implements Quote {
   @override
   final String userId;
   @override
-  final String brand;
+  final InsuranceType insuranceType;
+  final Map<String, dynamic> _requestData;
   @override
-  final String model;
-  @override
-  final int year;
-  @override
-  final bool hasAccidents;
-  @override
-  final double amount;
+  Map<String, dynamic> get requestData {
+    if (_requestData is EqualUnmodifiableMapView) return _requestData;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_requestData);
+  }
+
   @override
   final DateTime createdAt;
+  @override
+  final QuoteStatus status;
+  @override
+  final String? assignedAgent;
+  @override
+  final double? estimatedAmount;
+  final Map<String, dynamic>? _responseData;
+  @override
+  Map<String, dynamic>? get responseData {
+    final value = _responseData;
+    if (value == null) return null;
+    if (_responseData is EqualUnmodifiableMapView) return _responseData;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
+
+  @override
+  final DateTime? updatedAt;
   @override
   final String? notes;
 
@@ -200,25 +254,43 @@ class _Quote implements Quote {
             other is _Quote &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.brand, brand) || other.brand == brand) &&
-            (identical(other.model, model) || other.model == model) &&
-            (identical(other.year, year) || other.year == year) &&
-            (identical(other.hasAccidents, hasAccidents) ||
-                other.hasAccidents == hasAccidents) &&
-            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.insuranceType, insuranceType) ||
+                other.insuranceType == insuranceType) &&
+            const DeepCollectionEquality()
+                .equals(other._requestData, _requestData) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.assignedAgent, assignedAgent) ||
+                other.assignedAgent == assignedAgent) &&
+            (identical(other.estimatedAmount, estimatedAmount) ||
+                other.estimatedAmount == estimatedAmount) &&
+            const DeepCollectionEquality()
+                .equals(other._responseData, _responseData) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
             (identical(other.notes, notes) || other.notes == notes));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, userId, brand, model, year,
-      hasAccidents, amount, createdAt, notes);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      userId,
+      insuranceType,
+      const DeepCollectionEquality().hash(_requestData),
+      createdAt,
+      status,
+      assignedAgent,
+      estimatedAmount,
+      const DeepCollectionEquality().hash(_responseData),
+      updatedAt,
+      notes);
 
   @override
   String toString() {
-    return 'Quote(id: $id, userId: $userId, brand: $brand, model: $model, year: $year, hasAccidents: $hasAccidents, amount: $amount, createdAt: $createdAt, notes: $notes)';
+    return 'Quote(id: $id, userId: $userId, insuranceType: $insuranceType, requestData: $requestData, createdAt: $createdAt, status: $status, assignedAgent: $assignedAgent, estimatedAmount: $estimatedAmount, responseData: $responseData, updatedAt: $updatedAt, notes: $notes)';
   }
 }
 
@@ -231,12 +303,14 @@ abstract mixin class _$QuoteCopyWith<$Res> implements $QuoteCopyWith<$Res> {
   $Res call(
       {String id,
       String userId,
-      String brand,
-      String model,
-      int year,
-      bool hasAccidents,
-      double amount,
+      InsuranceType insuranceType,
+      Map<String, dynamic> requestData,
       DateTime createdAt,
+      QuoteStatus status,
+      String? assignedAgent,
+      double? estimatedAmount,
+      Map<String, dynamic>? responseData,
+      DateTime? updatedAt,
       String? notes});
 }
 
@@ -254,12 +328,14 @@ class __$QuoteCopyWithImpl<$Res> implements _$QuoteCopyWith<$Res> {
   $Res call({
     Object? id = null,
     Object? userId = null,
-    Object? brand = null,
-    Object? model = null,
-    Object? year = null,
-    Object? hasAccidents = null,
-    Object? amount = null,
+    Object? insuranceType = null,
+    Object? requestData = null,
     Object? createdAt = null,
+    Object? status = null,
+    Object? assignedAgent = freezed,
+    Object? estimatedAmount = freezed,
+    Object? responseData = freezed,
+    Object? updatedAt = freezed,
     Object? notes = freezed,
   }) {
     return _then(_Quote(
@@ -271,30 +347,38 @@ class __$QuoteCopyWithImpl<$Res> implements _$QuoteCopyWith<$Res> {
           ? _self.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      brand: null == brand
-          ? _self.brand
-          : brand // ignore: cast_nullable_to_non_nullable
-              as String,
-      model: null == model
-          ? _self.model
-          : model // ignore: cast_nullable_to_non_nullable
-              as String,
-      year: null == year
-          ? _self.year
-          : year // ignore: cast_nullable_to_non_nullable
-              as int,
-      hasAccidents: null == hasAccidents
-          ? _self.hasAccidents
-          : hasAccidents // ignore: cast_nullable_to_non_nullable
-              as bool,
-      amount: null == amount
-          ? _self.amount
-          : amount // ignore: cast_nullable_to_non_nullable
-              as double,
+      insuranceType: null == insuranceType
+          ? _self.insuranceType
+          : insuranceType // ignore: cast_nullable_to_non_nullable
+              as InsuranceType,
+      requestData: null == requestData
+          ? _self._requestData
+          : requestData // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
       createdAt: null == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      status: null == status
+          ? _self.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as QuoteStatus,
+      assignedAgent: freezed == assignedAgent
+          ? _self.assignedAgent
+          : assignedAgent // ignore: cast_nullable_to_non_nullable
+              as String?,
+      estimatedAmount: freezed == estimatedAmount
+          ? _self.estimatedAmount
+          : estimatedAmount // ignore: cast_nullable_to_non_nullable
+              as double?,
+      responseData: freezed == responseData
+          ? _self._responseData
+          : responseData // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>?,
+      updatedAt: freezed == updatedAt
+          ? _self.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       notes: freezed == notes
           ? _self.notes
           : notes // ignore: cast_nullable_to_non_nullable
@@ -305,10 +389,9 @@ class __$QuoteCopyWithImpl<$Res> implements _$QuoteCopyWith<$Res> {
 
 /// @nodoc
 mixin _$QuoteRequest {
-  String get brand;
-  String get model;
-  int get year;
-  bool get hasAccidents;
+  String get userId;
+  InsuranceType get insuranceType;
+  Map<String, dynamic> get data;
   String? get notes;
 
   /// Create a copy of QuoteRequest
@@ -327,22 +410,21 @@ mixin _$QuoteRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is QuoteRequest &&
-            (identical(other.brand, brand) || other.brand == brand) &&
-            (identical(other.model, model) || other.model == model) &&
-            (identical(other.year, year) || other.year == year) &&
-            (identical(other.hasAccidents, hasAccidents) ||
-                other.hasAccidents == hasAccidents) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.insuranceType, insuranceType) ||
+                other.insuranceType == insuranceType) &&
+            const DeepCollectionEquality().equals(other.data, data) &&
             (identical(other.notes, notes) || other.notes == notes));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, brand, model, year, hasAccidents, notes);
+  int get hashCode => Object.hash(runtimeType, userId, insuranceType,
+      const DeepCollectionEquality().hash(data), notes);
 
   @override
   String toString() {
-    return 'QuoteRequest(brand: $brand, model: $model, year: $year, hasAccidents: $hasAccidents, notes: $notes)';
+    return 'QuoteRequest(userId: $userId, insuranceType: $insuranceType, data: $data, notes: $notes)';
   }
 }
 
@@ -353,7 +435,10 @@ abstract mixin class $QuoteRequestCopyWith<$Res> {
       _$QuoteRequestCopyWithImpl;
   @useResult
   $Res call(
-      {String brand, String model, int year, bool hasAccidents, String? notes});
+      {String userId,
+      InsuranceType insuranceType,
+      Map<String, dynamic> data,
+      String? notes});
 }
 
 /// @nodoc
@@ -368,29 +453,24 @@ class _$QuoteRequestCopyWithImpl<$Res> implements $QuoteRequestCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? brand = null,
-    Object? model = null,
-    Object? year = null,
-    Object? hasAccidents = null,
+    Object? userId = null,
+    Object? insuranceType = null,
+    Object? data = null,
     Object? notes = freezed,
   }) {
     return _then(_self.copyWith(
-      brand: null == brand
-          ? _self.brand
-          : brand // ignore: cast_nullable_to_non_nullable
+      userId: null == userId
+          ? _self.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      model: null == model
-          ? _self.model
-          : model // ignore: cast_nullable_to_non_nullable
-              as String,
-      year: null == year
-          ? _self.year
-          : year // ignore: cast_nullable_to_non_nullable
-              as int,
-      hasAccidents: null == hasAccidents
-          ? _self.hasAccidents
-          : hasAccidents // ignore: cast_nullable_to_non_nullable
-              as bool,
+      insuranceType: null == insuranceType
+          ? _self.insuranceType
+          : insuranceType // ignore: cast_nullable_to_non_nullable
+              as InsuranceType,
+      data: null == data
+          ? _self.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
       notes: freezed == notes
           ? _self.notes
           : notes // ignore: cast_nullable_to_non_nullable
@@ -403,22 +483,26 @@ class _$QuoteRequestCopyWithImpl<$Res> implements $QuoteRequestCopyWith<$Res> {
 @JsonSerializable()
 class _QuoteRequest implements QuoteRequest {
   const _QuoteRequest(
-      {required this.brand,
-      required this.model,
-      required this.year,
-      required this.hasAccidents,
-      this.notes});
+      {required this.userId,
+      required this.insuranceType,
+      required final Map<String, dynamic> data,
+      this.notes})
+      : _data = data;
   factory _QuoteRequest.fromJson(Map<String, dynamic> json) =>
       _$QuoteRequestFromJson(json);
 
   @override
-  final String brand;
+  final String userId;
   @override
-  final String model;
+  final InsuranceType insuranceType;
+  final Map<String, dynamic> _data;
   @override
-  final int year;
-  @override
-  final bool hasAccidents;
+  Map<String, dynamic> get data {
+    if (_data is EqualUnmodifiableMapView) return _data;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_data);
+  }
+
   @override
   final String? notes;
 
@@ -442,22 +526,21 @@ class _QuoteRequest implements QuoteRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _QuoteRequest &&
-            (identical(other.brand, brand) || other.brand == brand) &&
-            (identical(other.model, model) || other.model == model) &&
-            (identical(other.year, year) || other.year == year) &&
-            (identical(other.hasAccidents, hasAccidents) ||
-                other.hasAccidents == hasAccidents) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.insuranceType, insuranceType) ||
+                other.insuranceType == insuranceType) &&
+            const DeepCollectionEquality().equals(other._data, _data) &&
             (identical(other.notes, notes) || other.notes == notes));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, brand, model, year, hasAccidents, notes);
+  int get hashCode => Object.hash(runtimeType, userId, insuranceType,
+      const DeepCollectionEquality().hash(_data), notes);
 
   @override
   String toString() {
-    return 'QuoteRequest(brand: $brand, model: $model, year: $year, hasAccidents: $hasAccidents, notes: $notes)';
+    return 'QuoteRequest(userId: $userId, insuranceType: $insuranceType, data: $data, notes: $notes)';
   }
 }
 
@@ -470,7 +553,10 @@ abstract mixin class _$QuoteRequestCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String brand, String model, int year, bool hasAccidents, String? notes});
+      {String userId,
+      InsuranceType insuranceType,
+      Map<String, dynamic> data,
+      String? notes});
 }
 
 /// @nodoc
@@ -486,29 +572,24 @@ class __$QuoteRequestCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? brand = null,
-    Object? model = null,
-    Object? year = null,
-    Object? hasAccidents = null,
+    Object? userId = null,
+    Object? insuranceType = null,
+    Object? data = null,
     Object? notes = freezed,
   }) {
     return _then(_QuoteRequest(
-      brand: null == brand
-          ? _self.brand
-          : brand // ignore: cast_nullable_to_non_nullable
+      userId: null == userId
+          ? _self.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      model: null == model
-          ? _self.model
-          : model // ignore: cast_nullable_to_non_nullable
-              as String,
-      year: null == year
-          ? _self.year
-          : year // ignore: cast_nullable_to_non_nullable
-              as int,
-      hasAccidents: null == hasAccidents
-          ? _self.hasAccidents
-          : hasAccidents // ignore: cast_nullable_to_non_nullable
-              as bool,
+      insuranceType: null == insuranceType
+          ? _self.insuranceType
+          : insuranceType // ignore: cast_nullable_to_non_nullable
+              as InsuranceType,
+      data: null == data
+          ? _self._data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
       notes: freezed == notes
           ? _self.notes
           : notes // ignore: cast_nullable_to_non_nullable

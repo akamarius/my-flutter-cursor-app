@@ -9,41 +9,62 @@ part of 'quote.dart';
 _Quote _$QuoteFromJson(Map<String, dynamic> json) => _Quote(
       id: json['id'] as String,
       userId: json['userId'] as String,
-      brand: json['brand'] as String,
-      model: json['model'] as String,
-      year: (json['year'] as num).toInt(),
-      hasAccidents: json['hasAccidents'] as bool,
-      amount: (json['amount'] as num).toDouble(),
+      insuranceType: $enumDecode(_$InsuranceTypeEnumMap, json['insuranceType']),
+      requestData: json['requestData'] as Map<String, dynamic>,
       createdAt: DateTime.parse(json['createdAt'] as String),
+      status: $enumDecode(_$QuoteStatusEnumMap, json['status']),
+      assignedAgent: json['assignedAgent'] as String?,
+      estimatedAmount: (json['estimatedAmount'] as num?)?.toDouble(),
+      responseData: json['responseData'] as Map<String, dynamic>?,
+      updatedAt: json['updatedAt'] == null
+          ? null
+          : DateTime.parse(json['updatedAt'] as String),
       notes: json['notes'] as String?,
     );
 
 Map<String, dynamic> _$QuoteToJson(_Quote instance) => <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,
-      'brand': instance.brand,
-      'model': instance.model,
-      'year': instance.year,
-      'hasAccidents': instance.hasAccidents,
-      'amount': instance.amount,
+      'insuranceType': _$InsuranceTypeEnumMap[instance.insuranceType]!,
+      'requestData': instance.requestData,
       'createdAt': instance.createdAt.toIso8601String(),
+      'status': _$QuoteStatusEnumMap[instance.status]!,
+      'assignedAgent': instance.assignedAgent,
+      'estimatedAmount': instance.estimatedAmount,
+      'responseData': instance.responseData,
+      'updatedAt': instance.updatedAt?.toIso8601String(),
       'notes': instance.notes,
     };
 
+const _$InsuranceTypeEnumMap = {
+  InsuranceType.auto: 'auto',
+  InsuranceType.habitation: 'habitation',
+  InsuranceType.deces: 'deces',
+  InsuranceType.epargne: 'epargne',
+  InsuranceType.sante: 'sante',
+  InsuranceType.voyage: 'voyage',
+};
+
+const _$QuoteStatusEnumMap = {
+  QuoteStatus.pending: 'pending',
+  QuoteStatus.inProgress: 'inProgress',
+  QuoteStatus.rejected: 'rejected',
+  QuoteStatus.cancelled: 'cancelled',
+  QuoteStatus.completed: 'completed',
+};
+
 _QuoteRequest _$QuoteRequestFromJson(Map<String, dynamic> json) =>
     _QuoteRequest(
-      brand: json['brand'] as String,
-      model: json['model'] as String,
-      year: (json['year'] as num).toInt(),
-      hasAccidents: json['hasAccidents'] as bool,
+      userId: json['userId'] as String,
+      insuranceType: $enumDecode(_$InsuranceTypeEnumMap, json['insuranceType']),
+      data: json['data'] as Map<String, dynamic>,
       notes: json['notes'] as String?,
     );
 
 Map<String, dynamic> _$QuoteRequestToJson(_QuoteRequest instance) =>
     <String, dynamic>{
-      'brand': instance.brand,
-      'model': instance.model,
-      'year': instance.year,
-      'hasAccidents': instance.hasAccidents,
+      'userId': instance.userId,
+      'insuranceType': _$InsuranceTypeEnumMap[instance.insuranceType]!,
+      'data': instance.data,
       'notes': instance.notes,
     };
